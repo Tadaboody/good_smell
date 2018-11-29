@@ -1,54 +1,53 @@
-from astpretty import pprint
+from astpretty import pprint, pformat
 from ast import *
+import astor
 import ast
+from lint_smell import LintSmell
+import logging
+from typing import Union
 
 
-class EnumerateFixer(NodeTransformer):
-    def visit_For(self, node: ast.For):
-        print("visit")
-        if self.is_range_len(node):
-            print("found")
-            enumerate_node = Name(id='enumerate', ctx=Load())
-            node: For
-            node_iterable = node.iter.args[0].args[0]
-            return ast.fix_missing_locations(copy_location(For(target=Tuple(elts=[Name(id='i', ctx=Store()), Name(id='elm', ctx=Store())], ctx=Store()),
-                                                               iter=Call(
-                func=enumerate_node, args=[node_iterable], keywords=[]),
-                body=node.body,
-                orelse=node.orelse), node))
-        return node
+class RangeLenSmell(LintSmell):
+    class EnumerateFixer(NodeTransformer):
+        def __init__(self, change_node: bool):
+            self.change_node = change_node
 
-    @staticmethod
-    def is_range_len(node: ast.For):
-        try:
-            print("check")
-            print(pprint(node))
-            return node.iter.func.id == 'range' and node.iter.args[0].func.id == 'len'
-        except AttributeError as e:
-            print("attr error!" + str(e))
-            return False
-        # if isinstance(node, ast.For):
-        #     node: For
-        #     iters = node.iter
-        #     if isinstance(iters, Call) and iters.func.id == 'range' :
-        #         iters_arg = iters.args[0]
-        #         return isinstance(iters_arg, Call) and iters_arg.func.id == 'len'
+        def visit_For(self, node: ast.For) -> Union[bool, ast.For]:
+            logging.debug("visit")
+            if not self.change_node and self.is_range_len(node): # TODO: 
+                return True
+
+            if self.is_range_len(node):
+                logging.debug("found")
+                enumerate_node = Name(id='enumerate', ctx=Load())
+                node: For
+                node_iterable = node.iter.args[0].args[0]
+                return ast.fix_missing_locations(copy_location(For(target=Tuple(elts=[Name(id='i', ctx=Store()), Name(id='elm', ctx=Store())], ctx=Store()),
+                                                                   iter=Call(
+                    func=enumerate_node, args=[node_iterable], keywords=[]),
+                    body=node.body,
+                    orelse=node.orelse), node))
+            return node
+
+        @staticmethod
+        def is_range_len(node: ast.For):
+            try:
+                logging.debug("check")
+                logging.debug(pformat(node))
+                return node.iter.func.id == 'range' and node.iter.args[0].func.id == 'len'
+            except AttributeError as e:
+                logging.debug("attr error!" + str(e))
+                return False
+
+    def check_for_smell(self) -> bool:
+        """Check if the smell occurs between `starting_line` and `end_line` in `source_code`"""
+        return self.EnumerateFixer(change_node=False).visit(ast.parse(self.source_code))
+
+    def fix_smell(self) -> str:
+        """Return a fixed version of the code without the code smell"""
+        return self.EnumerateFixer(change_node=True).visit(ast.parse(self.source_code))
 
 
 def swap_enumerate(code: str):
     return EnumerateFixer().visit(ast.parse(code))
 
-
-def main():
-    code = """a=[]
-for i in range(len(a)):
-    pass
-        """
-    node = swap_enumerate(code)
-    pprint(node)
-    import astor
-    print(astor.to_source(node))
-
-
-if __name__ == "__main__":
-    main()
