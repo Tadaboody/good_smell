@@ -29,9 +29,10 @@ for i in range(len(seq)):
     print(a)
     """
     fixed_source = """seq = [0]
-for i,a in enumerate(seq):
+for i, a in enumerate(seq):
     print(a)
-    """
+""" #TODO: Normalize tests for formatting
+    fixed_smell = fix_smell(source)
     assert fix_smell(source) == fixed_source
 
 
@@ -44,7 +45,7 @@ for i in range(len(seq)):
     """
     fixed_source = """
 seq = [0]
-for i,a in enumerate(seq):
+for i, a in enumerate(seq):
     pass
     """
     assert fix_smell(source) == fixed_source
