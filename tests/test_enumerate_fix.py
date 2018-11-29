@@ -41,12 +41,10 @@ def test_empty_body():
     source = """seq = [0]
 for i in range(len(seq)):
     a = seq[i]
-    print(a)
     """
-    fixed_source = """
-seq = [0]
+    fixed_source = """seq = [0]
 for i, a in enumerate(seq):
     pass
-    """
+"""
     assert fix_smell(source) == fixed_source
 

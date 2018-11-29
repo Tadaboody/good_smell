@@ -39,7 +39,7 @@ class RangeLenSmell(LintSmell):
                 node_iterable = node.iter.args[0].args[0]
                 original_target = node.target
                 deleter = self.AssignDeleter(target=original_target, seq=node_iterable)
-                new_body = deleter.visit(node).body
+                new_body = deleter.visit(node).body or [Pass()]
                 elm_target = deleter.elem_target or Name(id='elm', ctx=Store())
                 return ast.fix_missing_locations(copy_location(For(target=Tuple(elts=[original_target, elm_target], ctx=Store()),
                                                                    iter=Call(
