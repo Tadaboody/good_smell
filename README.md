@@ -7,7 +7,7 @@ A linting/refactoring library for python iterating best practices
 ```py
 for i in range(len(iterable)):
     x = iterable[i]
-    do_thing(i)
+    do_thing(x,i)
 ```
 will be fixed to 
 ```py
