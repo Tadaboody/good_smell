@@ -1,16 +1,25 @@
 # Iter Lint
 A linting/refactoring library for python iterating best practices
 
-## Use cases
+## Installing:
+```sh
+python setup.py install
+```
+## Usage:
+```sh
+Usage:       iter_lint PATH [STARTING_LINE] [END_LINE]
+             iter_lint --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
+```
+## Supported code smells:
 
-### Range(len(iterable))
+### Range(len(sequence))
 ```py
-for i in range(len(iterable)):
-    x = iterable[i]
+for i in range(len(sequence)):
+    x = sequence[i]
     do_thing(x,i)
 ```
 will be fixed to 
 ```py
-for x,i in enumerate(iterable):
+for i, x in enumerate(sequence):
     do_thing(x,i)
 ```
