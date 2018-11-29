@@ -22,29 +22,37 @@ def test_range_len_fix(source):
                      fix_smell(source))
 
 
-def test_range_len_assert_fix():
-    source = """seq = [0]
+examples = [
+    ("""seq = [0]
 for i in range(len(seq)):
     a = seq[i]
     print(a)
-    """
-    fixed_source = """seq = [0]
+    """,
+     """seq = [0]
 for i, a in enumerate(seq):
     print(a)
-""" #TODO: Normalize tests for formatting
-    fixed_smell = fix_smell(source)
-    assert fix_smell(source) == fixed_source
-
-
-def test_empty_body():
-    """Assert that when creating an empty body it is subsituted with pass"""
-    source = """seq = [0]
+"""
+     ),
+     # Replace an empty body with pass
+    ("""seq = [0]
 for i in range(len(seq)):
     a = seq[i]
-    """
-    fixed_source = """seq = [0]
+    """,
+     """seq = [0]
 for i, a in enumerate(seq):
     pass
 """
-    assert fix_smell(source) == fixed_source
+     ),
+     # As seen on the README
+     ("""for i in range(len(sequence)):
+    x = sequence[i]
+    do_thing(x,i)""",
+    """for i, x in enumerate(sequence):
+    do_thing(x, i)
+""")
+]
 
+
+@pytest.mark.parametrize("source,fixed_source", examples)
+def test_range_len_assert_fix(source, fixed_source):
+    assert fix_smell(source) == fixed_source
