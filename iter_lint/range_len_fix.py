@@ -1,10 +1,12 @@
-from astpretty import pprint, pformat
-from ast import *
-import astor
 import ast
-from lint_smell import LintSmell
 import logging
+from ast import *
 from typing import Union
+
+import astor
+from astpretty import pformat, pprint
+
+from iter_lint import LintSmell
 
 
 class RangeLenSmell(LintSmell):
@@ -45,9 +47,8 @@ class RangeLenSmell(LintSmell):
 
     def fix_smell(self) -> str:
         """Return a fixed version of the code without the code smell"""
-        return self.EnumerateFixer(change_node=True).visit(ast.parse(self.source_code))
+        return astor.to_source(self.EnumerateFixer(change_node=True).visit(ast.parse(self.source_code)))
 
 
 def swap_enumerate(code: str):
     return EnumerateFixer().visit(ast.parse(code))
-

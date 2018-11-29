@@ -1,17 +1,29 @@
-from range_len_fix import RangeLenSmell
-from lint_smell import LintSmell
 from pathlib import Path
-from fire import Fire
+
 import astor
+from fire import Fire
+
+from iter_lint import LintSmell, RangeLenSmell
 
 
-def lint_source(path: str, starting_line: int=0, end_line: int=None):
+def print_fixed_smell(path: str, starting_line: int = 0, end_line: int = None):
+    """Prints a fixed version of `source`"""
     path = Path(path)
     source = path.read_text()
+    print(fix_smell(source, starting_line, end_line))
+
+
+def fix_smell(source: str, starting_line: int = 0, end_line: int = None) -> str:
+    """Returns a fixed version of `source`"""
     smell: LintSmell
     for smell in (RangeLenSmell,):
         source = smell(source, starting_line, end_line).fix_smell()
-    print(astor.to_source(source))
+    return source
+
+
+def main():
+    Fire(print_fixed_smell)
+
 
 if __name__ == '__main__':
-    Fire(lint_source)
+    main()
