@@ -33,7 +33,7 @@ for i, a in enumerate(seq):
     print(a)
 """
      ),
-     # Replace an empty body with pass
+    # Replace an empty body with pass
     ("""seq = [0]
 for i in range(len(seq)):
     a = seq[i]
@@ -43,11 +43,33 @@ for i, a in enumerate(seq):
     pass
 """
      ),
-     # As seen on the README
-     ("""for i in range(len(sequence)):
+    # As seen on the README
+    ("""for i in range(len(sequence)):
     x = sequence[i]
     do_thing(x,i)""",
-    """for i, x in enumerate(sequence):
+     """for i, x in enumerate(sequence):
+    do_thing(x, i)
+"""),
+    ("""for i in range(len(sequence)):
+    print('something unrelated')
+    x = sequence[i]
+    do_thing(x,i)""",
+     """for i, x in enumerate(sequence):
+    print('something unrelated')
+    do_thing(x, i)
+"""),
+    # Nested smells
+    ("""for i in range(len(sequence)):
+    print('something unrelated')
+    x = sequence[i]
+    for i in range(len(sequence)):
+        x = sequence[i]
+        do_thing(x,i)
+    do_thing(x,i)""",
+     """for i, x in enumerate(sequence):
+    for i, x in enumerate(sequence):
+        do_thing(x, i)
+    print('something unrelated')
     do_thing(x, i)
 """)
 ]
