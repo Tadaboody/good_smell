@@ -17,5 +17,5 @@ for i in range(len(a + b)):
 
 @pytest.mark.parametrize("source",valid_sources)
 def test_range_len_fix(source):
-    assert not match(r'for \w+ in range\(len\(.+\)\):', fix_smell(valid_sources))
+    assert not match(r'for \w+ in range\(len\(.+\)\):', fix_smell(source))
 

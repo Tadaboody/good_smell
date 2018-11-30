@@ -1,4 +1,4 @@
-# Iter Lint
+# Iter Lint [![Build Status](https://travis-ci.com/Tadaboody/iter_lint.svg?branch=master)](https://travis-ci.com/Tadaboody/iter_lint)
 A linting/refactoring library for python iterating best practices
 
 ## Installing:
