@@ -15,7 +15,9 @@ setup(
         'astpretty==1.4.0',
     ],
     setup_requires=[] + pytest_runner,
-    tests_require=['pytest==4.0.1'],
+    tests_require=['pytest==4.0.1',
+                   'mccabe==0.6.1', 'pytest-mccabe==0.1',
+                   'autopep8==1.4.3'],
     entry_points={
         'console_scripts': [
             'iter_lint=iter_lint:main'
