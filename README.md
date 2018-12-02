@@ -23,3 +23,14 @@ will be fixed to
 for i, x in enumerate(sequence):
     do_thing(x,i)
 ```
+### Directly nested for loops
+```py
+for i in seq_a:
+    for j in seq_b:
+```
+to
+```py
+import itertools
+for i, j in itertools.product(seq_a, seq_b):
+    print(i, j)
+```
