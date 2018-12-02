@@ -17,6 +17,30 @@ for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 """
      ),
+    # Don't work if there's code between the loops (no way to know if it's unsafe)
+    ("""for i in seq_a:
+    print(i)
+    for j in seq_b:
+        print(i,j)
+    """,
+     """for i in seq_a:
+    print(i)
+    for j in seq_b:
+        print(i,j)
+    """
+     ),
+     # Don't work if there's code after the nested for
+    ("""for i in seq_a:
+    for j in seq_b:
+        print(i,j)
+    print(i)
+    """,
+     """for i in seq_a:
+    for j in seq_b:
+        print(i,j)
+    print(i)
+    """
+     ),
 ]
 
 
