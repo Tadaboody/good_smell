@@ -1,5 +1,5 @@
 from pathlib import Path
-from iter_lint import fix_smell
+from good_smell import fix_smell
 from re import match
 import pytest
 import logging

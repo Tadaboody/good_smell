@@ -1,4 +1,4 @@
-from iter_lint import LintSmell
+from good_smell import LintSmell
 import ast
 from typing import Union
 import astor
