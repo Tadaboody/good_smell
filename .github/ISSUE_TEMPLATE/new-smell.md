@@ -1,6 +1,7 @@
 ---
 name: New Smell
 about: Suggest a new smell to detect and fix
+tag: New Smell
 
 ---
 
@@ -8,12 +9,11 @@ about: Suggest a new smell to detect and fix
 
 ### Smelly code
 ```py
-for i in range(len(sequence)):
-    x = sequence[i]
+for x in iterable:
     ...
 ```
 ### Fixed code
 ```py
-for i,x in enumerate(sequence):
+for x in iterable:
     ...
 ```
