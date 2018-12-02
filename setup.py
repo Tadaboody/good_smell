@@ -1,7 +1,11 @@
+import sys
+from pathlib import Path
+
 from setuptools import setup
 
-
-import sys
+needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
+pytest_runner = ["pytest-runner==4.2"] if needs_pytest else []
+long_description = Path("README.md").read_text()
 
 needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
 pytest_runner = ["pytest-runner==4.2"] if needs_pytest else []
@@ -26,9 +30,22 @@ setup(
         "astpretty==1.4.0",
         "flake8 >= 3.0.0",
         'dataclasses==0.6;python_version<"3.7"',
-    ]
-    + dataclasses,
-    setup_requires=[] + pytest_runner,
+    ],
+    author="Tomer Keren",
+    author_email="tomer.keren.dev@gmail.com",
+    description="A linter/refactoring tool to make you code smell better!",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Framework :: Flake8",
+        "Environment :: Console",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+        "Operating System :: OS Independent",
+    ],
+    url="https://github.com/Tadaboody/good_smell",
     tests_require=tests_require,
     entry_points={
         "console_scripts": ["good_smell=good_smell:main"],
