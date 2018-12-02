@@ -1,7 +1,7 @@
 ---
 name: New Smell
 about: Suggest a new smell to detect and fix
-tag: New Smell
+labels: New Smell
 
 ---
 
