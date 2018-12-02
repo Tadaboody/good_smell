@@ -34,3 +34,8 @@ import itertools
 for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 ```
+
+### Running tests
+```sh
+python setup.py test
+```
