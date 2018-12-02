@@ -33,7 +33,7 @@ class NestedForTransformer(ast.NodeTransformer):
                 target=ast.Tuple(elts=[node.target, inner_for.target]),
                 iter=ast.Call(func=itertools_product, args=[
                               node.iter, inner_for.iter], keywords=[]),
-                body=inner_for.body + node.body[1:],
+                body=inner_for.body,
                 orelse=node.orelse
             )
             return [ast.copy_location(import_itertools, node), ast.fix_missing_locations(new_for)]
@@ -41,8 +41,9 @@ class NestedForTransformer(ast.NodeTransformer):
 
     @staticmethod
     def is_nested_for(node: ast.For):
+        """Check if the node is only a nested for"""
         try:
-            return isinstance(node.body[0], ast.For)
+            return isinstance(node.body[0], ast.For) and len(node.body) == 1
         except AttributeError as e:
             return False
 
