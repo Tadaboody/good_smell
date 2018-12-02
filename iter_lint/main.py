@@ -3,7 +3,7 @@ from pathlib import Path
 import astor
 from fire import Fire
 
-from iter_lint import LintSmell, RangeLenSmell
+from iter_lint import LintSmell, RangeLenSmell, NestedFor
 
 
 def print_fixed_smell(path: str, starting_line: int = 0, end_line: int = None):
@@ -16,7 +16,7 @@ def print_fixed_smell(path: str, starting_line: int = 0, end_line: int = None):
 def fix_smell(source: str, starting_line: int = 0, end_line: int = None) -> str:
     """Returns a fixed version of `source`"""
     smell: LintSmell
-    for smell in (RangeLenSmell,):
+    for smell in (RangeLenSmell, NestedFor):
         source = smell(source, starting_line, end_line).fix_smell()
     return source
 
