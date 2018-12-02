@@ -1,4 +1,4 @@
-# GoodSmell - it makes your code smell good! [![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell)
+# Good Smell - it makes your code smell good! [![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell)
 A linting/refactoring library for python best practices and lesser-known tricks
 
 ## Installing:
