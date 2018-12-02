@@ -1,4 +1,4 @@
-# Iter Lint [![Build Status](https://travis-ci.com/Tadaboody/iter_lint.svg?branch=master)](https://travis-ci.com/Tadaboody/iter_lint)
+# GoodSmell - it makes your code smell good! [![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell)
 A linting/refactoring library for python iterating best practices
 
 ## Installing:
@@ -7,8 +7,8 @@ python setup.py install
 ```
 ## Usage:
 ```sh
-Usage:       iter_lint PATH [STARTING_LINE] [END_LINE]
-             iter_lint --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
+Usage:       good_smell PATH [STARTING_LINE] [END_LINE]
+             good_smell --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
 ```
 ## Supported code smells:
 

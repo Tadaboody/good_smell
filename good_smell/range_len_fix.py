@@ -6,7 +6,7 @@ from typing import Union
 import astor
 from astpretty import pformat, pprint
 
-from iter_lint import LintSmell
+from good_smell import LintSmell
 
 
 class RangeLenSmell(LintSmell):

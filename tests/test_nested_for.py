@@ -1,7 +1,7 @@
 import autopep8
 import pytest
 
-from iter_lint import fix_smell
+from good_smell import fix_smell
 
 examples = [
     ("""seq_a = [0]
