@@ -27,6 +27,7 @@ for i, x in enumerate(sequence):
 ```py
 for i in seq_a:
     for j in seq_b:
+        print(i, j)
 ```
 to
 ```py
