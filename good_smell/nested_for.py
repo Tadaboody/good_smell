@@ -1,50 +1,60 @@
-from good_smell import LintSmell
+from good_smell import LintSmell, SmellWarning
 import ast
-from typing import Union
 import astor
 
 
 class NestedFor(LintSmell):
     """Checks for adjacent nested fors and replaces them with itertools.product"""
+    WARNING_MESSAGE = "Consider using itertools.product instead of a nested for: https://docs.python.org/3/library/itertools.html#itertools.product"
 
-    def check_for_smell(self) -> bool:
+    def check_for_smell(self) -> SmellWarning:
         """Check if the smell occurs between `starting_line` and `end_line` in `source_code`"""
-        return NestedForTransformer(change_node=False).visit(ast.parse(self.source_code))
+        transformer = NestedForTransformer()
+        transformer.visit(ast.parse(self.source_code))
+        node: ast.stmt
+        return [SmellWarning(msg=self.WARNING_MESSAGE, row=node.lineno, col=node.col_offset, code=self.code, path=self.path)
+                for node in transformer.transformed_nodes]
 
     def fix_smell(self) -> str:
         """Return a fixed version of the code without the code smell"""
-        return astor.to_source(NestedForTransformer(change_node=True).visit(ast.parse(self.source_code)))
+        return astor.to_source(NestedForTransformer().visit(ast.parse(self.source_code)))
+
+    @property
+    def code(self):
+        return "I01"
 
 
 class NestedForTransformer(ast.NodeTransformer):
-    def __init__(self, change_node: bool):
-        self.change_node = change_node
+    """NodeTransformer that goes through all the nested `for`s and replaces them with itertools.product"""
 
-    def visit_For(self, node: ast.For) -> Union[bool, ast.For]:
-        if not self.change_node and self.is_nested_for(node):
-            return True
+    def __init__(self):
+        # Tracks all the nodes that were changed from the transformation
+        self.transformed_nodes = list()
 
-        if self.is_nested_for(node):
-            inner_for = node.body[0]
-            inner_target = inner_for.target
-            import_itertools = ast_node('import itertools')
-            itertools_product = ast_node('itertools.product').value
-            new_for = ast.For(
-                target=ast.Tuple(elts=[node.target, inner_for.target]),
-                iter=ast.Call(func=itertools_product, args=[
-                              node.iter, inner_for.iter], keywords=[]),
-                body=inner_for.body,
-                orelse=node.orelse
-            )
-            return [ast.copy_location(import_itertools, node), ast.fix_missing_locations(new_for)]
-        return node
+    def visit_For(self, node: ast.For) -> ast.For:
+        if not self.is_nested_for(node):
+            return node
+
+        inner_for: ast.For = node.body[0]
+        import_itertools = ast_node('import itertools')
+        itertools_product = ast_node('itertools.product').value
+        new_for = ast.For(
+            target=ast.Tuple(elts=[node.target, inner_for.target]),
+            iter=ast.Call(func=itertools_product, args=[
+                node.iter, inner_for.iter], keywords=[]),
+            body=inner_for.body,
+            orelse=node.orelse
+        )
+        new_for = ast.fix_missing_locations(new_for)
+        self.transformed_nodes.append(new_for)
+        return [ast.copy_location(import_itertools, node), new_for]
 
     @staticmethod
     def is_nested_for(node: ast.For):
         """Check if the node is only a nested for"""
         try:
             return isinstance(node.body[0], ast.For) and len(node.body) == 1
-        except AttributeError as e:
+        except AttributeError:
             return False
 
 

@@ -13,7 +13,7 @@ def print_smell_warnings(path: str):
 
 
 def smell_warnings(path: Path) -> Iterable[SmellWarning]:
-    for smell in (NestedFor,):
+    for smell in (NestedFor, RangeLenSmell):
         yield from smell(source_code=path.read_text(), path=str(path)).check_for_smell()
 
 
