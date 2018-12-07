@@ -6,13 +6,21 @@ A linting/refactoring library for python best practices and lesser-known tricks
 python setup.py install
 ```
 ## Usage:
+``
+good_smell warn - Print warnings about smells in the code
+``
 ```sh
-Usage:       good_smell PATH [STARTING_LINE] [END_LINE]
-             good_smell --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
+good_smell warn PATH
+good_smell warn --path PATH
+```
+``good_smell fix - Print a fixed version of the code``
+```sh
+good_smell fix PATH [STARTING_LINE] [END_LINE]
+good_smell fix --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
 ```
 ## Supported code smells:
 
-### Range(len(sequence))
+``Range(len(sequence))``
 ```py
 for i in range(len(sequence)):
     x = sequence[i]
@@ -23,7 +31,7 @@ will be fixed to
 for i, x in enumerate(sequence):
     do_thing(x,i)
 ```
-### Directly nested for loops
+``Directly nested for loops``
 ```py
 for i in seq_a:
     for j in seq_b:
