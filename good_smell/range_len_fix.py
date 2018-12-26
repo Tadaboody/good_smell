@@ -3,7 +3,7 @@ import logging
 from typing import List, Union
 
 import astor
-from astpretty import pformat, pprint
+from astpretty import pformat
 
 from good_smell import LintSmell, SmellWarning
 
@@ -12,12 +12,20 @@ class RangeLenSmell(LintSmell):
     WARNING_MESSAGE = "Instead of using a c-style for loop, try using enumerate!"
 
     def check_for_smell(self) -> List[SmellWarning]:
-        """Check if the smell occurs between `starting_line` and `end_line` in `source_code`"""
+        """Return a list of all occuring smells of this smell class"""
         transformer = EnumerateFixer()
         transformer.visit(ast.parse(self.source_code))
         node: ast.stmt
-        return [SmellWarning(msg=self.WARNING_MESSAGE, row=node.lineno, col=node.col_offset, code=self.code, path=self.path)
-                for node in transformer.transformed_nodes]
+        return [
+            SmellWarning(
+                msg=self.WARNING_MESSAGE,
+                row=node.lineno,
+                col=node.col_offset,
+                code=self.code,
+                path=self.path,
+            )
+            for node in transformer.transformed_nodes
+        ]
 
     def fix_smell(self) -> str:
         """Return a fixed version of the code without the code smell"""
@@ -36,7 +44,11 @@ class AssignDeleter(ast.NodeTransformer):
 
     def visit_Assign(self, node: ast.Assign):
         """Deletes a node if it assigning using the for target"""
-        if isinstance(node.value, ast.Subscript) and node.value.slice.value.id == self.id.id and node.value.value.id == self.seq.id:
+        if (
+            isinstance(node.value, ast.Subscript)
+            and node.value.slice.value.id == self.id.id
+            and node.value.value.id == self.seq.id
+        ):
             self.elem_target = node.targets[0]
             return None
         return node
@@ -52,18 +64,19 @@ class EnumerateFixer(ast.NodeTransformer):
             return node
 
         logging.debug("found")
-        enumerate_node = ast.Name(id='enumerate', ctx=ast.Load())
+        enumerate_node = ast.Name(id="enumerate", ctx=ast.Load())
         node_iterable = node.iter.args[0].args[0]
         original_target = node.target
         deleter = AssignDeleter(target=original_target, seq=node_iterable)
         new_body = deleter.visit(node).body or [ast.Pass()]
-        elm_target = deleter.elem_target or ast.Name(id='elm', ctx=ast.Store())
+        elm_target = deleter.elem_target or ast.Name(id="elm", ctx=ast.Store())
         # for (original_target,elm_target) in enumerate(node_iterable):
-        new_node = ast.For(target=ast.Tuple(elts=[original_target, elm_target], ctx=ast.Store()),
-                           iter=ast.Call(
-            func=enumerate_node, args=[node_iterable], keywords=[]),
+        new_node = ast.For(
+            target=ast.Tuple(elts=[original_target, elm_target], ctx=ast.Store()),
+            iter=ast.Call(func=enumerate_node, args=[node_iterable], keywords=[]),
             body=new_body,
-            orelse=node.orelse)
+            orelse=node.orelse,
+        )
         new_node = ast.fix_missing_locations(ast.copy_location(new_node, node))
         self.transformed_nodes.append(new_node)
         return new_node
@@ -74,8 +87,8 @@ class EnumerateFixer(ast.NodeTransformer):
             logging.debug("check")
             logging.debug(pformat(node))
             from typing import cast
+
             node.iter = cast(ast.Call, node.iter)
-            return node.iter.func.id == 'range' and node.iter.args[0].func.id == 'len'
-        except AttributeError as e:
-            logging.debug("attr error!" + str(e))
+            return node.iter.func.id == "range" and node.iter.args[0].func.id == "len"
+        except AttributeError:
             return False
