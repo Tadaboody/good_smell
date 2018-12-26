@@ -1,3 +1,4 @@
+from typing import Optional
 import dataclasses
 
 FLAKE8_FORMAT = '{path:s}:{row:d}:{col:d}:{code:s}{text:s}'
@@ -10,7 +11,7 @@ class SmellWarning:
     code: str
     row: int
     col: int
-    path: str
+    path: Optional[str]
     msg: str
 
     def warning_string(self, formatter: str = FLAKE8_FORMAT):

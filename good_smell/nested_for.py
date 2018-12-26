@@ -1,13 +1,14 @@
 from good_smell import LintSmell, SmellWarning
 import ast
 import astor
+from typing import cast, List
 
 
 class NestedFor(LintSmell):
     """Checks for adjacent nested fors and replaces them with itertools.product"""
     WARNING_MESSAGE = "Consider using itertools.product instead of a nested for: https://docs.python.org/3/library/itertools.html#itertools.product"
 
-    def check_for_smell(self) -> SmellWarning:
+    def check_for_smell(self) -> List[SmellWarning]:
         """Check if the smell occurs between `starting_line` and `end_line` in `source_code`"""
         transformer = NestedForTransformer()
         transformer.visit(ast.parse(self.source_code))
@@ -31,7 +32,7 @@ class NestedForTransformer(ast.NodeTransformer):
         # Tracks all the nodes that were changed from the transformation
         self.transformed_nodes = list()
 
-    def visit_For(self, node: ast.For) -> ast.For:
+    def visit_For(self, node: ast.For):
         if not self.is_nested_for(node):
             return node
 
@@ -58,7 +59,7 @@ class NestedForTransformer(ast.NodeTransformer):
             return False
 
 
-def ast_node(expr: str) -> ast.AST:
-    """Helper function to parse a string denoting an expression into an AST node"""
+def ast_node(expr: str) -> ast.Expr:
+    """Helper function to parse a string denoting a simple expression into an AST node"""
     # ast.parse returns "Module(body=[Node])"
-    return ast.parse(expr).body[0]
+    return cast(ast.Expr, ast.parse(expr).body[0])
