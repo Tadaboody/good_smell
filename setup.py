@@ -6,7 +6,7 @@ import sys
 needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
 pytest_runner = ["pytest-runner==4.2"] if needs_pytest else []
 dataclasses = (
-    ["dataclasses==0.6"] if sys.version_info < (3, 7) else []
+    [] if sys.version_info < (3, 7) else []
 )  # Backport of dataclasses from py3.7
 
 setup(
@@ -14,8 +14,15 @@ setup(
     version="0.2",
     py_modules=["good_smell"],
     packages=["good_smell"],
-    install_requires=["fire==0.1.3", "astor==0.7.1", "astpretty==1.4.0"] + dataclasses,
-    setup_requires=["flake8 >= 3.0.0"] + pytest_runner,
+    install_requires=[
+        "fire==0.1.3",
+        "astor==0.7.1",
+        "astpretty==1.4.0",
+        "flake8 >= 3.0.0",
+        'dataclasses==0.6;python_version<"3.7"',
+    ]
+    + dataclasses,
+    setup_requires=[] + pytest_runner,
     tests_require=[
         "pytest==4.0.1",
         "mccabe==0.6.1",
