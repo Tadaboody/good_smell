@@ -8,23 +8,22 @@ from good_smell import SmellWarning
 class LintSmell(abc.ABC):
     """Abstract Base class to represent the sniffing instructions for the linter"""
 
-    def __init__(
-        self,
+    def __init__(self, path: Optional[str] = None, tree: Optional[ast.AST] = None):
+        self.tree = tree
+        self.path = path
+
+    @classmethod
+    def from_source(
+        cls,
         source_code: Optional[str] = None,
         start_line: Optional[int] = 0,
         end_line: Optional[int] = None,
         path: Optional[str] = None,
-        tree: Optional[ast.AST] = None,
-    ):
-        if source_code:
-            self.start_line = start_line
-            self.end_line = end_line or len(source_code.splitlines())
-            self.source_code = os.linesep.join(
-                source_code.splitlines()[start_line:end_line]
-            )
-        self.tree = tree or ast.parse(self.source_code)
-
-        self.path = path
+    ) -> "LintSmell":
+        start_line = start_line
+        end_line = end_line or len(source_code.splitlines())
+        source_code = os.linesep.join(source_code.splitlines()[start_line:end_line])
+        return cls(path=path, tree=ast.parse(source_code))
 
     @abc.abstractmethod
     def check_for_smell(self) -> List[SmellWarning]:

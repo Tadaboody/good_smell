@@ -13,7 +13,9 @@ def print_smell_warnings(path: str):
 
 def smell_warnings(path: Path) -> Iterable[SmellWarning]:
     for smell in implemented_smells:
-        yield from smell(source_code=path.read_text(), path=str(path)).check_for_smell()
+        yield from smell.from_source(
+            source_code=path.read_text(), path=str(path)
+        ).check_for_smell()
 
 
 def print_fixed_smell(path: str, starting_line: int = 0, end_line: int = None):
@@ -29,7 +31,9 @@ def fix_smell(
     """Returns a fixed version of `source`"""
     smell: Type[LintSmell]
     for smell in implemented_smells:
-        source = smell(source, starting_line, end_line, path=path).fix_smell()
+        source = smell.from_source(
+            source, starting_line, end_line, path=path
+        ).fix_smell()
     return source
 
 
