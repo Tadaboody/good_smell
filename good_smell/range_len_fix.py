@@ -14,7 +14,7 @@ class RangeLenSmell(LintSmell):
     def check_for_smell(self) -> List[SmellWarning]:
         """Return a list of all occuring smells of this smell class"""
         transformer = EnumerateFixer()
-        transformer.visit(ast.parse(self.source_code))
+        transformer.visit(self.tree)
         node: ast.stmt
         return [
             SmellWarning(
@@ -29,11 +29,11 @@ class RangeLenSmell(LintSmell):
 
     def fix_smell(self) -> str:
         """Return a fixed version of the code without the code smell"""
-        return astor.to_source(EnumerateFixer().visit(ast.parse(self.source_code)))
+        return astor.to_source(EnumerateFixer().visit(self.tree))
 
     @property
     def code(self):
-        return "W01"
+        return "SML001"
 
 
 class AssignDeleter(ast.NodeTransformer):

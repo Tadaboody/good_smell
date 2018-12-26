@@ -3,7 +3,7 @@ from pathlib import Path
 from fire import Fire
 from typing import Type, Iterable
 
-from good_smell import LintSmell, RangeLenSmell, NestedFor, SmellWarning
+from good_smell import LintSmell, implemented_smells, SmellWarning
 
 
 def print_smell_warnings(path: str):
@@ -12,7 +12,7 @@ def print_smell_warnings(path: str):
 
 
 def smell_warnings(path: Path) -> Iterable[SmellWarning]:
-    for smell in (NestedFor, RangeLenSmell):
+    for smell in implemented_smells:
         yield from smell(source_code=path.read_text(), path=str(path)).check_for_smell()
 
 
@@ -28,7 +28,7 @@ def fix_smell(
 ) -> str:
     """Returns a fixed version of `source`"""
     smell: Type[LintSmell]
-    for smell in (RangeLenSmell, NestedFor):
+    for smell in implemented_smells:
         source = smell(source, starting_line, end_line, path=path).fix_smell()
     return source
 
