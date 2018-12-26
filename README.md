@@ -1,5 +1,8 @@
-# Good Smell - it makes your code smell good! [![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell)
-A linting/refactoring library for python best practices and lesser-known tricks
+# Good Smell - it makes your code smell good! 
+A linting/refactoring library for python best practices and lesser-known tricks  
+---
+[![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+---
 
 ## Installing:
 ```sh
