@@ -1,4 +1,5 @@
 import abc
+import ast
 import os
 from typing import List, Optional
 from good_smell import SmellWarning
@@ -13,14 +14,15 @@ class LintSmell(abc.ABC):
         start_line: Optional[int] = 0,
         end_line: Optional[int] = None,
         path: Optional[str] = None,
+        tree: Optional[ast.AST] = None,
     ):
-        self.start_line = start_line
-        self.end_line = end_line or len(source_code.splitlines())
-        self.source_code = os.linesep.join(
-            source_code.splitlines()[start_line:end_line]
-        )
-        if self.source_code:
-            pass
+        if source_code:
+            self.start_line = start_line
+            self.end_line = end_line or len(source_code.splitlines())
+            self.source_code = os.linesep.join(
+                source_code.splitlines()[start_line:end_line]
+            )
+        self.tree = tree or ast.parse(self.source_code)
 
         self.path = path
 

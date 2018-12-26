@@ -11,7 +11,7 @@ class NestedFor(LintSmell):
 
     def check_for_smell(self) -> List[SmellWarning]:
         transformer = NestedForTransformer()
-        transformer.visit(ast.parse(self.source_code))
+        transformer.visit(self.tree)
         node: ast.stmt
         return [
             SmellWarning(
@@ -26,13 +26,11 @@ class NestedFor(LintSmell):
 
     def fix_smell(self) -> str:
         """Return a fixed version of the code without the code smell"""
-        return astor.to_source(
-            NestedForTransformer().visit(ast.parse(self.source_code))
-        )
+        return astor.to_source(NestedForTransformer().visit(self.tree))
 
     @property
     def code(self):
-        return "I01"
+        return "SML002"
 
 
 class NestedForTransformer(ast.NodeTransformer):
