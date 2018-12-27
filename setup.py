@@ -21,7 +21,7 @@ tests_require = [
 ]
 setup(
     name="good_smell",
-    version="0.4",
+    version="0.5",
     py_modules=["good_smell"],
     packages=["good_smell"],
     setup_requires=[] + pytest_runner,
@@ -34,7 +34,7 @@ setup(
     ],
     author="Tomer Keren",
     author_email="tomer.keren.dev@gmail.com",
-    description="A linter/refactoring tool to make you code smell better!",
+    description="A linter/refactoring tool to make your code smell better!",
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="BSD",
