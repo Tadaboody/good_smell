@@ -24,6 +24,7 @@ setup(
     version="0.3",
     py_modules=["good_smell"],
     packages=["good_smell"],
+    setup_requires=[] + pytest_runner,
     install_requires=[
         "fire==0.1.3",
         "astor==0.7.1",
