@@ -3,3 +3,10 @@ python:
   - "3.6"
 # command to run tests
 script: python setup.py test
+
+deploy:
+  provider: pypi
+  user: $PYPI_USER
+  password: $PYPI_PASSWORD
+  on:
+    branch: master
