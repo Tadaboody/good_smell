@@ -5,8 +5,9 @@ A linting/refactoring library for python best practices and lesser-known tricks
 ---
 
 ## Installing:
+Clone the repository and run inside it
 ```sh
-python setup.py install
+pip install . # add -e for development
 ```
 ## Usage:
 ``
@@ -16,6 +17,7 @@ good_smell warn - Print warnings about smells in the code
 good_smell warn PATH
 good_smell warn --path PATH
 ```
+alternativly you can run it through [flake8](http://flake8.pycqa.org/en/latest/). Smells will be with the code SMLxxx
 ``good_smell fix - Print a fixed version of the code``
 ```sh
 good_smell fix PATH [STARTING_LINE] [END_LINE]
@@ -49,5 +51,6 @@ for i, j in itertools.product(seq_a, seq_b):
 
 ### Running tests
 ```sh
-python setup.py test
+pip install .[test]
+pytest
 ```
