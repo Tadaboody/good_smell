@@ -17,7 +17,8 @@ good_smell warn - Print warnings about smells in the code
 good_smell warn PATH
 good_smell warn --path PATH
 ```
-alternativly you can run it through [flake8](http://flake8.pycqa.org/en/latest/). Smells will be with the code SMLxxx
+Alternativly you can run it through [flake8](http://flake8.pycqa.org/en/latest/). Smells will be with the code SMLxxx  
+
 ``good_smell fix - Print a fixed version of the code``
 ```sh
 good_smell fix PATH [STARTING_LINE] [END_LINE]
