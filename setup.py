@@ -21,7 +21,7 @@ tests_require = [
 ]
 setup(
     name="good_smell",
-    version="0.3",
+    version="0.4",
     py_modules=["good_smell"],
     packages=["good_smell"],
     setup_requires=[] + pytest_runner,
