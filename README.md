@@ -2,12 +2,13 @@
 A linting/refactoring library for python best practices and lesser-known tricks  
 ---
 [![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![PyPi version](https://pypip.in/v/good_smell/badge.png)](https://pypi.org/project/good-smell/)
 ---
 
 ## Installing:
 Clone the repository and run inside it
 ```sh
-pip install . # add -e for development
+pip install good_smell 
 ```
 ## Usage:
 ``
