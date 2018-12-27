@@ -6,7 +6,6 @@ A linting/refactoring library for python best practices and lesser-known tricks
 ---
 
 ## Installing:
-Clone the repository and run inside it
 ```sh
 pip install good_smell 
 ```
@@ -51,7 +50,8 @@ for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 ```
 
-### Running tests
+## Running tests
+Clone the repository and run inside it
 ```sh
 pip install .[test]
 pytest
