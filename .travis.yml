@@ -2,7 +2,9 @@ language: python
 python:
   - "3.6"
 # command to run tests
-script: python setup.py test
+script: 
+  pip install -r requirements.txt
+  pytest 
 
 deploy:
   provider: pypi

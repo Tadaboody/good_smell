@@ -50,9 +50,14 @@ for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 ```
 
-## Running tests
+## Developing
 Clone the repository and run inside it
 ```sh
-pip install .[test]
+pip install -e .[dev]
+```
+This will install the requirements and the package itself, updating when you edit the code.
+
+Tests are run using pytest, simply run:
+```sh
 pytest
 ```
