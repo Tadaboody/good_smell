@@ -32,5 +32,4 @@ class GoodSmellFlake8:
     @staticmethod
     def leading_digit_str(num: int, digits: int) -> str:
         """Adds leading 0's to num to make him `digits` long"""
-        missing_0s = digits - int(math.log10(num)) - 1
-        return f"{'0'*missing_0s}{num}"
+        return str(num).zfill(digits)
