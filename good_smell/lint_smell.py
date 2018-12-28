@@ -37,3 +37,8 @@ class LintSmell(abc.ABC):
     @abc.abstractmethod
     def code(self) -> str:
         """ The smell's error code. Of the shape SMLxxx"""
+
+    @property
+    @abc.abstractmethod
+    def symbol(self) -> str:
+        """The symbolic name for the smell"""

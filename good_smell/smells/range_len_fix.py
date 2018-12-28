@@ -23,6 +23,7 @@ class RangeLenSmell(LintSmell):
                 col=node.col_offset,
                 code=self.code,
                 path=self.path,
+                symbol=self.symbol,
             )
             for node in transformer.transformed_nodes
         ]
@@ -34,6 +35,10 @@ class RangeLenSmell(LintSmell):
     @property
     def code(self):
         return "SML001"
+
+    @property
+    def symbol(self):
+        return "range-len"
 
 
 class AssignDeleter(ast.NodeTransformer):

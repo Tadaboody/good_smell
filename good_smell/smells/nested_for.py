@@ -20,6 +20,7 @@ class NestedFor(LintSmell):
                 col=node.col_offset,
                 code=self.code,
                 path=self.path,
+                symbol=self.symbol,
             )
             for node in transformer.transformed_nodes
         ]
@@ -31,6 +32,10 @@ class NestedFor(LintSmell):
     @property
     def code(self):
         return "SML002"
+
+    @property
+    def symbol(self):
+        return "nested-for"
 
 
 class NestedForTransformer(ast.NodeTransformer):
