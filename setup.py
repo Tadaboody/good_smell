@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
 pytest_runner = ["pytest-runner==4.2"] if needs_pytest else []
@@ -21,9 +21,8 @@ tests_require = [
 ]
 setup(
     name="good_smell",
-    version="0.6",
-    py_modules=["good_smell"],
-    packages=["good_smell"],
+    version="0.6.1",
+    packages=[find_packages(exclude=("tests",))],
     setup_requires=[] + pytest_runner,
     install_requires=[
         "fire==0.1.3",
