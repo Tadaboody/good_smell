@@ -1,33 +1,19 @@
-from good_smell import LintSmell, SmellWarning
+from good_smell import AstSmell
 from typing import List
 import ast
 import astor
 
 
-class NestedFor(LintSmell):
+class NestedFor(AstSmell):
     """Checks for adjacent nested fors and replaces them with itertools.product"""
 
-    WARNING_MESSAGE = "Consider using itertools.product instead of a nested for"
+    @property
+    def transformer_class(self):
+        return NestedForTransformer
 
-    def check_for_smell(self) -> List[SmellWarning]:
-        transformer = NestedForTransformer()
-        transformer.visit(self.tree)
-        node: ast.stmt
-        return [
-            SmellWarning(
-                msg=self.WARNING_MESSAGE,
-                row=node.lineno,
-                col=node.col_offset,
-                code=self.code,
-                path=self.path,
-                symbol=self.symbol,
-            )
-            for node in transformer.transformed_nodes
-        ]
-
-    def fix_smell(self) -> str:
-        """Return a fixed version of the code without the code smell"""
-        return astor.to_source(NestedForTransformer().visit(self.tree))
+    @property
+    def warning_message(self):
+        return "Consider using itertools.product instead of a nested for"
 
     @property
     def code(self):
