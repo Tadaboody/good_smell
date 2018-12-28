@@ -1,7 +1,5 @@
 import ast
-import logging
 
-from astpretty import pformat
 from good_smell import AstSmell, LoggingTransformer
 from typing import Union
 
@@ -10,10 +8,6 @@ class RangeLenSmell(AstSmell):
     @property
     def transformer_class(self):
         return EnumerateFixer
-
-    @property
-    def code(self):
-        return "SML001"
 
     @property
     def symbol(self):
