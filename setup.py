@@ -53,5 +53,5 @@ setup(
         "console_scripts": ["good_smell=good_smell:main"],
         "flake8.extension": "SML=good_smell:GoodSmellFlake8",
     },
-    extras_require={"test": tests_require},
+    extras_require={"dev": tests_require},
 )
