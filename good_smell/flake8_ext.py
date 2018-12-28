@@ -23,13 +23,8 @@ class GoodSmellFlake8:
                 (
                     warning.row,
                     warning.col,
-                    f"SML{self.leading_digit_str(num,3)} {warning.msg}",
+                    f"SML{str(num).zfill(3)} {warning.msg}",
                     "GoodSmell",
                 )
                 for warning in warnings
             )
-
-    @staticmethod
-    def leading_digit_str(num: int, digits: int) -> str:
-        """Adds leading 0's to num to make him `digits` long"""
-        return str(num).zfill(digits)
