@@ -1,8 +1,7 @@
 import dataclasses
 
-FLAKE8_FORMAT = "{path:s}:{row:d}:{col:d}:{code:s}{text:s}"
-FLAKE8_FORMAT = "{path}:{row}:{col} {code} {msg}"
-PYLINT_FORMAT = "{path}:{line}:{column}: {msg_id}: {msg} ({symbol})"
+FLAKE8_FORMAT = "{path}:{row}:{col} {symbol} {msg}"
+PYLINT_FORMAT = "{path}:{line}:{column}: {msg} ({symbol})"
 
 
 @dataclasses.dataclass(frozen=True)  # pylint: disable=too-few-public-methods
