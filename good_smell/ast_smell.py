@@ -5,6 +5,23 @@ from typing import Type, List
 import abc
 
 
+class LoggingTransformer(ast.NodeTransformer, abc.ABC):
+    """A subclass of transformer that logs the nodes it transforms"""
+
+    def __init__(self):
+        self.transformed_nodes = list()
+
+    @abc.abstractmethod
+    def is_smelly(self, node: ast.AST) -> bool:
+        """Checks if the given `node` should be transformed"""
+
+    def visit(self, node: ast.AST):
+        if not self.is_smelly(node):
+            return self.generic_visit(node)
+        self.transformed_nodes.append(node)
+        return super().visit(node)
+
+
 class AstSmell(LintSmell):
     def check_for_smell(self) -> List[SmellWarning]:
         """Return a list of all occuring smells of this smell class"""
@@ -27,5 +44,5 @@ class AstSmell(LintSmell):
         return astor.to_source(self.transformer_class().visit(self.tree))
 
     @abc.abstractmethod
-    def transformer_class(self) -> Type[ast.NodeTransformer]:
+    def transformer_class(self) -> Type[LoggingTransformer]:
         """The class for the transformer used to create"""

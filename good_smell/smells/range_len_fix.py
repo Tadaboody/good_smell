@@ -2,7 +2,7 @@ import ast
 import logging
 
 from astpretty import pformat
-from good_smell import AstSmell
+from good_smell import AstSmell, LoggingTransformer
 from typing import Union
 
 
@@ -42,16 +42,8 @@ class AssignDeleter(ast.NodeTransformer):
         return node
 
 
-class EnumerateFixer(ast.NodeTransformer):
-    def __init__(self):
-        self.transformed_nodes = list()
-
+class EnumerateFixer(LoggingTransformer):
     def visit_For(self, node: ast.For) -> Union[bool, ast.For]:
-        logging.debug("visit")
-        if not self.is_range_len(node):
-            return node
-
-        logging.debug("found")
         enumerate_node = ast.Name(id="enumerate", ctx=ast.Load())
         node_iterable = node.iter.args[0].args[0]
         original_target = node.target
@@ -66,17 +58,11 @@ class EnumerateFixer(ast.NodeTransformer):
             orelse=node.orelse,
         )
         new_node = ast.fix_missing_locations(ast.copy_location(new_node, node))
-        self.transformed_nodes.append(new_node)
         return new_node
 
     @staticmethod
-    def is_range_len(node: ast.For):
+    def is_smelly(node: ast.For):
         try:
-            logging.debug("check")
-            logging.debug(pformat(node))
-            from typing import cast
-
-            node.iter = cast(ast.Call, node.iter)
             return node.iter.func.id == "range" and node.iter.args[0].func.id == "len"
         except AttributeError:
             return False

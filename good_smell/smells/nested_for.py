@@ -1,7 +1,5 @@
-from good_smell import AstSmell
-from typing import List
+from good_smell import AstSmell, LoggingTransformer
 import ast
-import astor
 
 
 class NestedFor(AstSmell):
@@ -24,18 +22,11 @@ class NestedFor(AstSmell):
         return "nested-for"
 
 
-class NestedForTransformer(ast.NodeTransformer):
+class NestedForTransformer(LoggingTransformer):
     """NodeTransformer that goes visits all the nested `for`s and replaces them
     with itertools.product"""
 
-    def __init__(self):
-        # Tracks all the nodes that were changed from the transformation
-        self.transformed_nodes = list()
-
     def visit_For(self, node: ast.For) -> ast.For:
-        if not self.is_nested_for(node):
-            return node
-
         inner_for: ast.For = node.body[0]
         import_itertools = ast_node("import itertools")
         itertools_product = ast_node("itertools.product").value
@@ -48,14 +39,17 @@ class NestedForTransformer(ast.NodeTransformer):
             orelse=node.orelse,
         )
         new_for = ast.fix_missing_locations(new_for)
-        self.transformed_nodes.append(new_for)
         return [ast.copy_location(import_itertools, node), new_for]
 
     @staticmethod
-    def is_nested_for(node: ast.For):
+    def is_smelly(node: ast.AST):
         """Check if the node is only a nested for"""
         try:
-            return isinstance(node.body[0], ast.For) and len(node.body) == 1
+            return (
+                isinstance(node, ast.For)
+                and isinstance(node.body[0], ast.For)
+                and len(node.body) == 1
+            )
         except AttributeError:
             return False
 
