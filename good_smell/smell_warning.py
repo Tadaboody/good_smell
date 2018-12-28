@@ -9,7 +9,6 @@ PYLINT_FORMAT = "{path}:{line}:{column}: {msg_id}: {msg} ({symbol})"
 class SmellWarning:
     """Class to represent a warning message about a smell"""
 
-    code: str
     row: int
     col: int
     path: str

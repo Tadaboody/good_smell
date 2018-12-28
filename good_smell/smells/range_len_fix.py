@@ -1,36 +1,15 @@
 import ast
 import logging
-from typing import List, Union
 
-import astor
 from astpretty import pformat
+from good_smell import AstSmell
+from typing import Union
 
-from good_smell import LintSmell, SmellWarning
 
-
-class RangeLenSmell(LintSmell):
-    WARNING_MESSAGE = "Instead of using a c-style for loop, try using enumerate!"
-
-    def check_for_smell(self) -> List[SmellWarning]:
-        """Return a list of all occuring smells of this smell class"""
-        transformer = EnumerateFixer()
-        transformer.visit(self.tree)
-        node: ast.stmt
-        return [
-            SmellWarning(
-                msg=self.WARNING_MESSAGE,
-                row=node.lineno,
-                col=node.col_offset,
-                code=self.code,
-                path=self.path,
-                symbol=self.symbol,
-            )
-            for node in transformer.transformed_nodes
-        ]
-
-    def fix_smell(self) -> str:
-        """Return a fixed version of the code without the code smell"""
-        return astor.to_source(EnumerateFixer().visit(self.tree))
+class RangeLenSmell(AstSmell):
+    @property
+    def transformer_class(self):
+        return EnumerateFixer
 
     @property
     def code(self):
@@ -39,6 +18,10 @@ class RangeLenSmell(LintSmell):
     @property
     def symbol(self):
         return "range-len"
+
+    @property
+    def warning_message(self) -> str:
+        return "Instead of using a c-style for loop, try using enumerate!"
 
 
 class AssignDeleter(ast.NodeTransformer):

@@ -42,3 +42,8 @@ class LintSmell(abc.ABC):
     @abc.abstractmethod
     def symbol(self) -> str:
         """The symbolic name for the smell"""
+
+    @property
+    @abc.abstractmethod
+    def warning_message(self) -> str:
+        """The symbolic name for the smell"""
