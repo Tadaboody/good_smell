@@ -22,7 +22,7 @@ tests_require = [
 setup(
     name="good_smell",
     version="0.6.1",
-    packages=[find_packages(exclude=("tests",))],
+    packages=find_packages(exclude=("tests",)),
     setup_requires=[] + pytest_runner,
     install_requires=[
         "fire==0.1.3",
@@ -35,7 +35,6 @@ setup(
     author_email="tomer.keren.dev@gmail.com",
     description="A linter/refactoring tool to make your code smell better!",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     license="BSD",
     classifiers=[
         "Development Status :: 3 - Alpha",
