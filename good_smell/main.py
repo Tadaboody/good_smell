@@ -8,13 +8,18 @@ from good_smell import LintSmell, implemented_smells, SmellWarning
 
 def print_smell_warnings(path: str):
     """Prints any warning messages about smells"""
-    print("\n".join(warning.warning_string() for warning in smell_warnings(Path(path))))
+    print(
+        "\n".join(
+            warning.warning_string()
+            for warning in smell_warnings(Path(path).read_text(), path)
+        )
+    )
 
 
-def smell_warnings(path: Path) -> Iterable[SmellWarning]:
+def smell_warnings(source: str, path: str='') -> Iterable[SmellWarning]:
     for smell in implemented_smells:
         yield from smell.from_source(
-            source_code=path.read_text(), path=str(path)
+            source_code=source, path=str(path)
         ).check_for_smell()
 
 
