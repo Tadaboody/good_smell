@@ -52,11 +52,11 @@ def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
         symbols = [symbol for symbol in symbols_line.split(",") if symbol != "None"]
         before = "".join(itertools.takewhile(lambda l: "==>" not in l, lines_iter))
         after = ""
-        for line in lines_iter:
-            if is_title(line):
-                lines_iter.send(str(line))
+        for source_line in lines_iter:
+            if is_title(source_line):
+                lines_iter.send(str(source_line))
                 break
-            after += line
+            after += source_line
         yield CollectedTest(
             desc=desc, error_symbols=symbols, before=before, after=after
         )
@@ -90,4 +90,4 @@ def params_from_file():
 @pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
 def test_collected_items(before, after, symbols):
     assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
-    assert set(symbols) == {warn.symbol for warn in smell_warnings(before)}
+    assert set(symbols) == {smell.symbol for smell in smell_warnings(before)}
