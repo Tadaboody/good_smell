@@ -1,7 +1,9 @@
 ---
 name: New Smell
 about: Suggest a new smell to detect and fix
-labels: New Smell
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
@@ -17,3 +19,4 @@ for x in iterable:
 for x in iterable:
     ...
 ```
+### Why is it smelly?
