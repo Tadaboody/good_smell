@@ -48,7 +48,8 @@ def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
     lines_iter = repeating_generator(lines)
     for line in (line for line in lines_iter if is_title(line)):
         desc = line.strip("#:").strip()
-        symbols = next(lines_iter).strip("#").strip().split(",")
+        symbols_line = next(lines_iter).strip("#").strip()
+        symbols = [symbol for symbol in symbols_line.split(",") if symbol != "None"]
         before = "".join(itertools.takewhile(lambda l: "==>" not in l, lines_iter))
         after = ""
         for line in lines_iter:
@@ -89,4 +90,4 @@ def params_from_file():
 @pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
 def test_collected_items(before, after, symbols):
     assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
-    # assert set(symbols) == {warn.symbol for warn in smell_warnings(before)}
+    assert set(symbols) == {warn.symbol for warn in smell_warnings(before)}
