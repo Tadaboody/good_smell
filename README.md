@@ -52,12 +52,3 @@ for i, j in itertools.product(seq_a, seq_b):
 
 ## Developing
 See [contributing guide](CONTRIBUTING)
-```sh
-pip install -e .[dev]
-```
-This will install the requirements and the package itself, updating when you edit the code.
-
-Tests are run using pytest, simply run:
-```sh
-pytest
-```
