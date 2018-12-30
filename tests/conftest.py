@@ -1,5 +1,6 @@
 from os import PathLike
-from typing import Iterator, List, NamedTuple
+import itertools
+from typing import Generator, Iterator, List, NamedTuple, TypeVar
 
 import autopep8
 
@@ -20,8 +21,6 @@ def is_title(line: str) -> bool:
     return line.startswith("#:")
 
 
-from typing import TypeVar, Generator
-
 T = TypeVar("T")
 
 
@@ -40,14 +39,10 @@ def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
     with open(path) as fp:
         lines = fp.readlines()
     lines_iter = repeating_generator(lines)
-    for line in lines_iter:
+    for line in (line for line in lines_iter if is_title(line)):
         desc = line.strip("#:").strip()
         symbols = next(lines_iter).strip("#").strip().split(",")
-        before = ""
-        for line in lines_iter:
-            if "==>" in line:
-                break
-            before += line
+        before = "".join(itertools.takewhile(lambda l: "==>" not in l, lines_iter))
         after = ""
         for line in lines_iter:
             if is_title(line):
