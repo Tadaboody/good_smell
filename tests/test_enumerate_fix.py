@@ -1,7 +1,6 @@
 from good_smell import fix_smell
 from re import match
 import pytest
-from tests import normalize_formatting
 
 valid_sources = ["""
 a = [0]
