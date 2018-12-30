@@ -51,7 +51,7 @@ for i, j in itertools.product(seq_a, seq_b):
 ```
 
 ## Developing
-Clone the repository and run inside it
+See [contributing guide](CONTRIBUTING)
 ```sh
 pip install -e .[dev]
 ```
