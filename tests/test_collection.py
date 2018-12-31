@@ -19,8 +19,8 @@ def normalize_formatting(code: str) -> str:
 
 class CollectedTest(NamedTuple):
     desc: str
-    before: int
     error_symbols: List[str]
+    before: int
     after: str
 
 
@@ -73,9 +73,11 @@ def test_collect_tests():
         assert case.after == """after = 0\nafter = 1\n"""
 
 
+test_case_files = [f for f in EXAMPLES_DIR.iterdir() if "example" not in f.name]
+
+
 def params_from_file():
-    f: Path
-    for file in (f for f in EXAMPLES_DIR.iterdir() if "example" not in f.name):
+    for file in test_case_files:
         yield from (
             pytest.param(
                 case.before,

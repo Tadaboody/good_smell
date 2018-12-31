@@ -1,4 +1,4 @@
-#: Move if to iterator if
+#: Move if to iterator
 # filter-iterator
 for i in range(10):
     if i == 2:
