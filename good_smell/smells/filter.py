@@ -31,13 +31,15 @@ class FilterTransformer(LoggingTransformer):
         if_node: ast.If = node.body[0]
         filter_condition: ast.Expr = if_node.test
         if not isinstance(node.iter, ast.GeneratorExp):
+            # Create a generator expression if it doesn't exist
+            GEN_ELT_NAME = 'x'
             gen_exp: ast.GeneratorExp = cast(
-                ast.GeneratorExp, ast_node("(x for x in seq)").value
+                ast.GeneratorExp, ast_node(f"({GEN_ELT_NAME} for {GEN_ELT_NAME} in seq)").value
             )
-            gen_target = ast_node("x").value
+            gen_target = ast_node(GEN_ELT_NAME).value
             iter_comprehension = gen_exp.generators[0]
-            name_replacer = NameReplacer(node.target, gen_target)
-            iter_comprehension.iter = name_replacer.visit(node.iter)
+            iter_comprehension.iter = replace_name_with_node(
+                node.iter, node.target, gen_target)
         else:
             gen_exp = node.iter
             iter_comprehension = gen_exp.generators[0]
