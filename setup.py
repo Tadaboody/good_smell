@@ -18,6 +18,7 @@ tests_require = [
     "mccabe==0.6.1",
     "pytest-mccabe==0.1",
     "autopep8==1.4.3",
+    "pytest-cov==2.6.0",
 ]
 setup(
     name="good_smell",
