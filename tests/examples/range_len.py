@@ -1,5 +1,5 @@
 # noqa: F821
-#: Baic test
+#: Range len instead of enumerate
 # range-len
 seq = [0]
 for i in range(len(seq)):
