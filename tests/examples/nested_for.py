@@ -1,4 +1,4 @@
-#: basic test
+#: Use itertools instead of nsted fors
 # nested-for
 seq_a = [0]
 seq_b = range(10)
