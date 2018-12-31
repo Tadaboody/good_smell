@@ -30,3 +30,11 @@ for i in range(10):
     if pred(i):
         print(1)
     print(2)
+#: Merge into existing expr
+# filter-iterator
+for i in (x * 2 for x in range(2)):
+    if pred(i):
+        pass
+# ==>
+for i in (x * 2 for x in range(2) if pred(x)):
+    pass
