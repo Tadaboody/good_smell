@@ -23,20 +23,27 @@ class AssignDeleter(ast.NodeTransformer):
         self.id = target
         self.seq = seq
         self.elem_target = None or ast.Name(id="elm", ctx=ast.Store())
+        self.uses_seq = False
 
     def visit_Assign(self, node: ast.Assign):
         """Deletes a node if it assigning using the for target"""
-        if (
-            isinstance(node.value, ast.Subscript)
-            and node.value.slice.value.id == self.id.id
-            and node.value.value.id == self.seq.id
-        ):
+        if self.accesses_seq(node.value):
             self.elem_target = node.targets[0]
             return None
         return self.generic_visit(node)
 
+    def accesses_seq(self, node) -> bool:
+        """Checks if the node acceses the sequence[target]"""
+        if (
+            isinstance(node, ast.Subscript)
+            and node.slice.value.id == self.id.id
+            and node.value.id == self.seq.id
+        ):
+            self.uses_seq = True
+            return True
+
     def visit_Subscript(self, node: ast.Subscript):
-        if node.slice.value.id == self.id.id and node.value.id == self.seq.id:
+        if self.accesses_seq(node):
             return self.elem_target
         return self.generic_visit(node)
 
@@ -48,7 +55,11 @@ class EnumerateFixer(LoggingTransformer):
         original_target = node.target
         deleter = AssignDeleter(target=original_target, seq=node_iterable)
         new_body = deleter.visit(node).body or [ast.Pass()]
-        elm_target = deleter.elem_target
+        elm_target = (
+            deleter.elem_target
+            if deleter.uses_seq
+            else ast.Name(id="_", ctx=ast.Store())
+        )
         # for (original_target,elm_target) in enumerate(node_iterable):
         new_node = ast.For(
             target=ast.Tuple(elts=[original_target, elm_target], ctx=ast.Store()),
