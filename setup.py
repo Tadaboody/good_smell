@@ -22,7 +22,7 @@ tests_require = [
 ]
 setup(
     name="good_smell",
-    version="0.10.1",
+    version="0.11.0",
     packages=find_packages(exclude=("tests",)),
     setup_requires=[] + pytest_runner,
     install_requires=[
