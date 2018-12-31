@@ -14,10 +14,6 @@ class NestedFor(AstSmell):
         return "Consider using itertools.product instead of a nested for"
 
     @property
-    def code(self):
-        return "SML002"
-
-    @property
     def symbol(self):
         return "nested-for"
 
@@ -44,14 +40,11 @@ class NestedForTransformer(LoggingTransformer):
     @staticmethod
     def is_smelly(node: ast.AST):
         """Check if the node is only a nested for"""
-        try:
-            return (
-                isinstance(node, ast.For)
-                and isinstance(node.body[0], ast.For)
-                and len(node.body) == 1
-            )
-        except AttributeError:
-            return False
+        return (
+            isinstance(node, ast.For)
+            and isinstance(node.body[0], ast.For)
+            and len(node.body) == 1
+        )
 
 
 def ast_node(expr: str) -> ast.AST:

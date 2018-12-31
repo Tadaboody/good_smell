@@ -58,3 +58,13 @@ for i in range(len(sequence)):
 # ==>
 for i, _ in enumerate(sequence):
     do_thing(i)
+#: Don't remove an assign to something else
+# range-len
+for i in range(len(sequence)):
+    a = 0
+    print(sequence[j])
+# ==>
+for i, _ in enumerate(sequence):
+    a = 0
+    print(sequence[j])
+
