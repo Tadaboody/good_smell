@@ -2,6 +2,22 @@ from good_smell import AstSmell, LoggingTransformer
 import ast
 
 
+class NameInNode(LoggingTransformer):
+    def __init__(self, name: ast.Name):
+        self.name = name
+        super().__init__()
+
+    def is_smelly(self, node: ast.AST) -> bool:
+        return isinstance(node, ast.Name) and node.id == self.name.id
+
+
+def name_in_node(node: ast.AST, name: ast.Name) -> bool:
+    """Checks if the node `name` is in `node`"""
+    checker = NameInNode(name)
+    checker.visit(node)
+    return bool(checker.transformed_nodes)
+
+
 class NestedFor(AstSmell):
     """Checks for adjacent nested fors and replaces them with itertools.product"""
 
@@ -44,6 +60,8 @@ class NestedForTransformer(LoggingTransformer):
             isinstance(node, ast.For)
             and isinstance(node.body[0], ast.For)
             and len(node.body) == 1
+            # Check there's no dependancy between nodes
+            and not name_in_node(node.body[0].iter, node.target)
         )
 
 
