@@ -22,7 +22,7 @@ class AssignDeleter(ast.NodeTransformer):
     def __init__(self, seq: ast.Name, target: ast.Name):
         self.id = target
         self.seq = seq
-        self.elem_target = None
+        self.elem_target = None or ast.Name(id="elm", ctx=ast.Store())
 
     def visit_Assign(self, node: ast.Assign):
         """Deletes a node if it assigning using the for target"""
@@ -33,7 +33,12 @@ class AssignDeleter(ast.NodeTransformer):
         ):
             self.elem_target = node.targets[0]
             return None
-        return node
+        return self.generic_visit(node)
+
+    def visit_Subscript(self, node: ast.Subscript):
+        if node.slice.value.id == self.id.id and node.value.id == self.seq.id:
+            return self.elem_target
+        return self.generic_visit(node)
 
 
 class EnumerateFixer(LoggingTransformer):
@@ -43,7 +48,7 @@ class EnumerateFixer(LoggingTransformer):
         original_target = node.target
         deleter = AssignDeleter(target=original_target, seq=node_iterable)
         new_body = deleter.visit(node).body or [ast.Pass()]
-        elm_target = deleter.elem_target or ast.Name(id="elm", ctx=ast.Store())
+        elm_target = deleter.elem_target
         # for (original_target,elm_target) in enumerate(node_iterable):
         new_node = ast.For(
             target=ast.Tuple(elts=[original_target, elm_target], ctx=ast.Store()),
@@ -52,6 +57,7 @@ class EnumerateFixer(LoggingTransformer):
             orelse=node.orelse,
         )
         new_node = ast.fix_missing_locations(ast.copy_location(new_node, node))
+        new_node = self.generic_visit(new_node)
         return new_node
 
     @staticmethod

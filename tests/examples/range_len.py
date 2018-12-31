@@ -1,28 +1,46 @@
 # noqa: F821
+# flake8: noqa
+#pylint: disable=consider-using-enumerate,undefined-variable
+sequence = []
 #: Range len instead of enumerate
 # range-len
-seq = [0]
-for i in range(len(seq)):
-    a = seq[i]
+sequence = [0]
+for i in range(len(sequence)):
+    a = sequence[i]
     print(a)
 # ==>
-seq = [0]
-for i, a in enumerate(seq):
+sequence = [0]
+for i, a in enumerate(sequence):
     print(a)
 #: Replace an empty body with pass
 # range-len
-seq = [0]
-for i in range(len(seq)):
-    a = seq[i]
+sequence = [0]
+for i in range(len(sequence)):
+    a = sequence[i]
 # ==>
-seq = [0]
-for i, a in enumerate(seq):
+sequence = [0]
+for i, a in enumerate(sequence):
     pass
-#: As seen on the README
+#: Multiple replaces
 # range-len
 for i in range(len(sequence)):
     x = sequence[i]
     do_thing(x, i)
+    other_thing(sequence[i], i)
 # ==>
 for i, x in enumerate(sequence):
     do_thing(x, i)
+    other_thing(x, i)
+
+#: Nested for
+# range-len
+for i in range(len(sequence)):
+    x = sequence[i]
+    for j in range(len(sequence)):
+        do_thing(x, j)
+    other_thing(sequence[i], i)
+# ==>
+for i, x in enumerate(sequence):
+    for j, elm in enumerate(sequence):
+        do_thing(x, j)
+    other_thing(x, i)
