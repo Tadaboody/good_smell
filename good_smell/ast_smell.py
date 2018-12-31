@@ -43,6 +43,7 @@ class AstSmell(LintSmell):
         """Return a fixed version of the code without the code smell"""
         return astor.to_source(self.transformer_class().visit(self.tree))
 
+    @property
     @abc.abstractmethod
     def transformer_class(self) -> Type[LoggingTransformer]:
         """The class for the transformer used to create"""
