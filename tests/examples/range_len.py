@@ -67,3 +67,4 @@ for i in range(len(sequence)):
 for i, _ in enumerate(sequence):
     a = 0
     print(sequence[j])
+
