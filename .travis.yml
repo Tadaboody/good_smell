@@ -3,9 +3,12 @@ python:
   - "3.6"
 install:
 - pip install -r requirements.txt
+- pip install codecov
 # command to run tests
 script: 
-- pytest 
+- pytest --cov=./good_smell 
+after_success:
+  - codecov
 
 deploy:
   provider: pypi
