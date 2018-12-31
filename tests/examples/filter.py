@@ -32,9 +32,18 @@ for i in range(10):
     print(2)
 #: Merge into existing expr
 # filter-iterator
-for i in (x * 2 for x in range(2)):
+for i in (a * 2 for a in range(2)):
     if pred(i):
         pass
 # ==>
-for i in (x * 2 for x in range(2) if pred(x)):
+for i in (a * 2 for a in range(2) if pred(a * 2)):
+    pass
+
+#: Merge into existing complex expr
+# filter-iterator
+for i in (f(a) * 2 for a in range(2)):
+    if pred(i):
+        pass
+# ==>
+for i in (f(a) * 2 for a in range(2) if pred(f(a) * 2)):
     pass

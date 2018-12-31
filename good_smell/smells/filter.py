@@ -1,3 +1,4 @@
+from typing import TypeVar
 import ast
 from typing import cast
 
@@ -5,14 +6,22 @@ from good_smell import AstSmell, LoggingTransformer
 
 
 class NameReplacer(ast.NodeTransformer):
-    def __init__(self, old: ast.Name, new: ast.Name):
+    def __init__(self, old: ast.Name, new: ast.AST):
         self.old = old
         self.new = new
 
-    def visit_Name(self, node: ast.Name) -> ast.Name:
+    def visit_Name(self, node: ast.Name) -> ast.AST:
         if node.id == self.old.id:
             return self.new
         return node
+
+
+T = TypeVar('T', bound=ast.AST)
+
+
+def replace_name_with_node(node: T, old_val: ast.Name, new_val: ast.AST) -> T:
+    """Returns `node` with all occurences of `old_val` (a variable) replaced with `new_val` (an expression)"""
+    return NameReplacer(old_val, new_val).visit(node)
 
 
 class FilterTransformer(LoggingTransformer):
@@ -21,15 +30,22 @@ class FilterTransformer(LoggingTransformer):
     def visit_For(self, node: ast.For) -> ast.For:
         if_node: ast.If = node.body[0]
         filter_condition: ast.Expr = if_node.test
-        iter_generator: ast.GeneratorExp = cast(
-            ast.GeneratorExp, ast_node("(x for x in seq)").value
-        )
-        x_name_node = ast_node("x").value
-        iter_comprehension = iter_generator.generators[0]
-        name_replacer = NameReplacer(node.target, x_name_node)
-        iter_comprehension.iter = name_replacer.visit(node.iter)
-        iter_comprehension.ifs.append(name_replacer.visit(filter_condition))
-        node.iter = iter_generator
+        if not isinstance(node.iter, ast.GeneratorExp):
+            gen_exp: ast.GeneratorExp = cast(
+                ast.GeneratorExp, ast_node("(x for x in seq)").value
+            )
+            gen_target = ast_node("x").value
+            iter_comprehension = gen_exp.generators[0]
+            name_replacer = NameReplacer(node.target, gen_target)
+            iter_comprehension.iter = name_replacer.visit(node.iter)
+        else:
+            gen_exp = node.iter
+            iter_comprehension = gen_exp.generators[0]
+            gen_target = gen_exp.elt
+
+        iter_comprehension.ifs.append(replace_name_with_node(
+            filter_condition, node.target, gen_target))
+        node.iter = gen_exp
         node.body = if_node.body
         return node
 
