@@ -81,13 +81,17 @@ def params_from_file():
                 case.before,
                 case.after,
                 case.error_symbols,
-                id=str(file) + ":" + case.desc,
+                id=file.name + ":" + case.desc,
             )
             for case in collect_tests(file)
         )
 
 
 @pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
-def test_collected_items(before, after, symbols):
-    assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
+def test_smell_warning(before, after, symbols):
     assert set(symbols) == {smell.symbol for smell in smell_warnings(before)}
+
+
+@pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
+def test_smell_fixing(before, after, symbols):
+    assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
