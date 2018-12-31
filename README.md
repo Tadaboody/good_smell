@@ -25,25 +25,16 @@ good_smell fix PATH [STARTING_LINE] [END_LINE]
 good_smell fix --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
 ```
 ## Supported code smells:
-
-``Range(len(sequence))``
+For a full list see [the code_smells doc](./docs/smell_list.md)
+For example
+Directly nested for loops (nested-for)
 ```py
-for i in range(len(sequence)):
-    x = sequence[i]
-    do_thing(x,i)
-```
-will be fixed to 
-```py
-for i, x in enumerate(sequence):
-    do_thing(x,i)
-```
-``Directly nested for loops``
-```py
+seq
 for i in seq_a:
     for j in seq_b:
         print(i, j)
 ```
-to
+will be fixed to
 ```py
 import itertools
 for i, j in itertools.product(seq_a, seq_b):
