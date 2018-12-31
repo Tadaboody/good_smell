@@ -45,6 +45,7 @@ class FilterTransformer(LoggingTransformer):
 class FilterIterator(AstSmell):
     """Checks for adjacent nested fors and replaces them with itertools.product"""
 
+    @property
     def transformer_class(self):
         return FilterTransformer
 
