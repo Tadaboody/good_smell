@@ -18,6 +18,7 @@ pip install -e .[dev] # Install the project in an [e]ditable way
 New smells are implented in a new file in `good_smell/smells`, by creating a class that inherits `good_smell/lint_smell.py`.
 After implementing the methods add the class to the list `implemented_smells` in `good_smell/smells/__init__.py`
 
+If you're new to parsing and transforming ASTs, [green tree snakes](https://greentreesnakes.readthedocs.io/en/latest/index.html) is a great guide to the basics.
 ## Write the tests
 Inside the relevant file in the `tests/examples` dir (Or a new), the tests are formatted like this
 ```py
