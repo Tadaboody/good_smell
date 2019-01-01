@@ -12,7 +12,8 @@ Clone the repository and run inside it:
 ```sh
 python -m venv venv # Create a virtual enviroment
 source venv/bin/activate # Activate it
-pip install -e .[dev] # Install the project in an [e]ditable way
+pip install -e .[dev] # Install the project in an [e]ditable way with [dev]elopment requirements
+pre-commit install # Install pre-commit hooks
 ```
 ## Write the solution
 New smells are implented in a new file in `good_smell/smells`, by creating a class that inherits `good_smell/lint_smell.py`.

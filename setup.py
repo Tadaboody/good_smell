@@ -36,7 +36,7 @@ setup(
     author_email="tomer.keren.dev@gmail.com",
     description="A linter/refactoring tool to make your code smell better!",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     license="BSD",
     classifiers=[
         "Development Status :: 3 - Alpha",
@@ -53,5 +53,5 @@ setup(
         "console_scripts": ["good_smell=good_smell:main"],
         "flake8.extension": "SML=good_smell:GoodSmellFlake8",
     },
-    extras_require={"dev": tests_require},
+    extras_require={"test": tests_require, "dev": tests_require + ["pre-commit"]},
 )

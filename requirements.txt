@@ -1,1 +1,1 @@
--e .[dev]
+-e .[dev] # Works like pip install -e .[dev]
