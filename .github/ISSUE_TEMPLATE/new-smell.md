@@ -2,7 +2,7 @@
 name: New Smell
 about: Suggest a new smell to detect and fix
 title: ''
-labels: ''
+labels: smell, new
 assignees: ''
 
 ---
