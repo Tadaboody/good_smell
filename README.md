@@ -23,6 +23,7 @@ import itertools
 for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 ```
+For a full list - check the list of [implemented smells](docs/implemented_smells)
 ## Installing:
 ```sh
 pip install good_smell 
