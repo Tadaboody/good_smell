@@ -1,15 +1,15 @@
 ### Range len instead of enumerate (range-len)
 ```py
-seq = [0]
-for i in range(len(seq)):
-    a = seq[i]
+sequence = [0]
+for i in range(len(sequence)):
+    a = sequence[i]
     print(a)
 
 ```
 Will be fixed to
 ```py
-seq = [0]
-for i, a in enumerate(seq):
+sequence = [0]
+for i, a in enumerate(sequence):
     print(a)
 ```
 ### Move if to iterator (filter-iterator)
@@ -37,10 +37,26 @@ for i in seq_a:
 ```
 Will be fixed to
 ```py
+import itertools
 seq_a = [0]
 seq_b = range(10)
-import itertools
 for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
+
+```
+### Move conditional continue to iterator using itertools.dropwhile (missing-dropwhile)
+```py
+for x in iterable:
+    # No body
+    if pred(x):
+        continue
+    print(x)
+
+```
+Will be fixed to
+```py
+import itertools
+for x in itertools.dropwhile(pred, iterable):
+    print(x)
 
 ```
