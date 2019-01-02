@@ -1,3 +1,4 @@
+exclude: 'tests/examples/'
 repos:
 -   repo: https://github.com/ambv/black
     rev: stable
