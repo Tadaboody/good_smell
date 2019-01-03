@@ -4,7 +4,7 @@ import pprint
 
 
 class YieldFrom(AstSmell):
-    """Checks for adjacent nested fors and replaces them with itertools.product"""
+    """Checks for yields inside for loops"""
 
     @property
     def transformer_class(self):
