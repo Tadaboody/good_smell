@@ -25,41 +25,37 @@ class CollectedTest(NamedTuple):
 
 
 def is_title(line: str) -> bool:
-    return line.startswith("#:")
+    return line.startswith(TITLE_PREFIX)
 
 
-T = TypeVar("T")
-
-
-def repeating_generator(iterator: Iterator[T]) -> Generator[T, T, None]:
-    """A generator that can be sent the next item it will yield"""
-    sent_item = None
-    for item in iterator:
-        if sent_item:
-            yield sent_item  # Is returned to generator.send
-            yield sent_item  # Is returned in the next iteration
-        sent_item = yield item
+TITLE_PREFIX = "#:"
+BEFORE_AFTER_SPLITTER = "==>"
+END_SYMBOL = "END"
 
 
 def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
     """Collects all test cases listed in `path`"""
     with open(path) as fp:
         lines = fp.readlines()
-    lines_iter = repeating_generator(lines)
-    for line in (line for line in lines_iter if is_title(line)):
+    lines_iter = iter(lines)  # Create iterator for continued iteration
+    for line_num, line in enumerate(line for line in lines_iter if is_title(line)):
         desc = line.strip("#:").strip()
         symbols_line = next(lines_iter).strip("#").strip()
         symbols = [symbol for symbol in symbols_line.split(",") if symbol != "None"]
-        before = "".join(itertools.takewhile(lambda l: "==>" not in l, lines_iter))
-        after = ""
-        for source_line in lines_iter:
-            if is_title(source_line):
-                lines_iter.send(str(source_line))
-                break
-            after += source_line
-        yield CollectedTest(
+        before = "".join(
+            itertools.takewhile(lambda l: BEFORE_AFTER_SPLITTER not in l, lines_iter)
+        )
+        after = "".join(itertools.takewhile(lambda l: END_SYMBOL not in l, lines_iter))
+
+        collected_test = CollectedTest(
             desc=desc, error_symbols=symbols, before=before, after=after
         )
+        if any(TITLE_PREFIX in field for field in collected_test):
+            raise Exception(
+                f"""Wrongly formatted example in {path}:{line_num}
+            {collected_test}"""
+            )
+        yield collected_test
 
 
 def test_collect_tests():

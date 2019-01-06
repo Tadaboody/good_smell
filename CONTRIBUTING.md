@@ -28,7 +28,7 @@ Inside the relevant file in the `tests/examples` dir (Or a new), the tests are f
 <Python code emitting the smells>
 # ==>
 <Python code after fixing the smell>
-
+# END
 ```
 See [the example file](tests/examples/example.py) for an example
 ## Run the tests
