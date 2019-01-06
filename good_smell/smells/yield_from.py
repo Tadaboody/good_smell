@@ -33,7 +33,7 @@ class YieldFromTransformer(LoggingTransformer):
         """Check if the node is a yield inside a for"""
         return (
             isinstance(node, ast.For)
-            and len(node.body) != 1
+            and len(node.body) == 1
             and isinstance(node.body[0], ast.Expr)
             and isinstance(node.body[0].value, ast.Yield)
         )
