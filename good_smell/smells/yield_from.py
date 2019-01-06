@@ -1,6 +1,5 @@
 from good_smell import AstSmell, LoggingTransformer
 import ast
-import pprint
 
 
 class YieldFrom(AstSmell):
