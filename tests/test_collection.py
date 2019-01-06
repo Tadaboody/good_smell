@@ -1,7 +1,7 @@
 import itertools
 from os import PathLike
 from pathlib import Path
-from typing import Generator, Iterator, List, NamedTuple, TypeVar
+from typing import Iterator, Set, NamedTuple
 
 import autopep8
 import pytest
@@ -19,7 +19,7 @@ def normalize_formatting(code: str) -> str:
 
 class CollectedTest(NamedTuple):
     desc: str
-    error_symbols: List[str]
+    error_symbols: Set[str]
     before: int
     after: str
 
@@ -31,6 +31,7 @@ def is_title(line: str) -> bool:
 TITLE_PREFIX = "#:"
 BEFORE_AFTER_SPLITTER = "==>"
 END_SYMBOL = "END"
+SPECIAL_SYMBOLS = (TITLE_PREFIX, BEFORE_AFTER_SPLITTER, END_SYMBOL)
 
 
 def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
@@ -41,7 +42,7 @@ def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
     for line_num, line in enumerate(line for line in lines_iter if is_title(line)):
         desc = line.strip("#:").strip()
         symbols_line = next(lines_iter).strip("#").strip()
-        symbols = [symbol for symbol in symbols_line.split(",") if symbol != "None"]
+        symbols = {symbol for symbol in symbols_line.split(",") if symbol != "None"}
         before = "".join(
             itertools.takewhile(lambda l: BEFORE_AFTER_SPLITTER not in l, lines_iter)
         )
@@ -50,7 +51,10 @@ def collect_tests(path: PathLike) -> Iterator[CollectedTest]:
         collected_test = CollectedTest(
             desc=desc, error_symbols=symbols, before=before, after=after
         )
-        if any(TITLE_PREFIX in field for field in collected_test):
+        if any(
+            symbol in field
+            for field, symbol in itertools.product(collected_test, SPECIAL_SYMBOLS)
+        ):
             raise Exception(
                 f"""Wrongly formatted example in {path}:{line_num}
             {collected_test}"""
@@ -64,7 +68,7 @@ def test_collect_tests():
     assert len(collected_tests) == 2
     for case in collected_tests:
         assert case.desc == "example"
-        assert case.error_symbols == ["example-symbol", "another-one"]
+        assert case.error_symbols == {"example-symbol", "another-one"}
         assert case.before == """before = 0\nbefore = 1\n"""
         assert case.after == """after = 0\nafter = 1\n"""
 
@@ -86,10 +90,10 @@ def params_from_file():
 
 
 @pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
-def test_smell_warning(before, after, symbols):
+def test_smell_warning(before, after, symbols):  # pylint: disable=unused-argument
     assert set(symbols) == {smell.symbol for smell in smell_warnings(before)}
 
 
 @pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
-def test_smell_fixing(before, after, symbols):
+def test_smell_fixing(before, after, symbols):  # pylint: disable=unused-argument
     assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
