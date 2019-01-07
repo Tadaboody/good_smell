@@ -1,15 +1,27 @@
+### Use "yield from" instead of yield inside of a for loop (yield-from)
+```py
+seq = range(10)
+for x in seq:
+    yield x
+
+```
+Will be fixed to
+```py
+seq = range(10)
+yield from seq
+```
 ### Range len instead of enumerate (range-len)
 ```py
-seq = [0]
-for i in range(len(seq)):
-    a = seq[i]
+sequence = [0]
+for i in range(len(sequence)):
+    a = sequence[i]
     print(a)
 
 ```
 Will be fixed to
 ```py
-seq = [0]
-for i, a in enumerate(seq):
+sequence = [0]
+for i, a in enumerate(sequence):
     print(a)
 ```
 ### Move if to iterator (filter-iterator)
@@ -37,9 +49,9 @@ for i in seq_a:
 ```
 Will be fixed to
 ```py
+import itertools
 seq_a = [0]
 seq_b = range(10)
-import itertools
 for i, j in itertools.product(seq_a, seq_b):
     print(i, j)
 
