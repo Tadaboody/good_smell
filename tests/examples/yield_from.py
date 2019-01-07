@@ -1,4 +1,4 @@
-#: use yield from iter instead for x in iter -> yield x
+#: Use "yield from" instead of yield inside of a for loop
 # yield-from
 seq = range(10)
 for x in seq:
