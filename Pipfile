@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+autopep8 = "*"
+astpretty = "*"
+pylint = "*"
+
+[packages]
+good-smell = {editable = true,path = "."}
+fire = "*"
+astor = "*"
+flake8 = "*"
+
+[requires]
+python_version = "3.7"

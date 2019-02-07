@@ -8,11 +8,12 @@ If there isn't one, [create one](https://github.com/Tadaboody/good_smell/issues/
 If you want to contribute code you will need to:
 
 ## Create an enviroment
+This project uses [Pipenv]() for package managment
+
 Clone the repository and run inside it:
 ```sh
-python -m venv venv # Create a virtual enviroment
-source venv/bin/activate # Activate it
-pip install -e .[dev] # Install the project in an [e]ditable way with [dev]elopment requirements
+pip install pipenv # Install pipenv
+pipenv install --dev # Create a new enviroment and install the development requirements
 pre-commit install # Install pre-commit hooks
 ```
 ## Write the solution
