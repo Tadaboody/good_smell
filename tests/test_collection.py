@@ -3,7 +3,7 @@ from os import PathLike
 from pathlib import Path
 from typing import Iterator, Set, NamedTuple
 
-import autopep8
+import black
 import pytest
 
 from good_smell import fix_smell, smell_warnings
@@ -14,7 +14,10 @@ EXAMPLES_DIR = FILE_DIR / "examples"
 
 def normalize_formatting(code: str) -> str:
     """Returns a string of the code with normalized formatting for easier compares"""
-    return autopep8.fix_code(code, options={"aggressive": 2})
+    try:
+        return black.format_file_contents(code, line_length=88, fast=True)
+    except black.NothingChanged:
+        return code
 
 
 class CollectedTest(NamedTuple):

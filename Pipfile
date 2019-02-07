@@ -10,9 +10,9 @@ pytest-cov = "*"
 autopep8 = "*"
 astpretty = "*"
 pylint = "*"
+black = "*"
 
 [packages]
-good-smell = {editable = true,path = "."}
 fire = "*"
 astor = "*"
 flake8 = "*"
