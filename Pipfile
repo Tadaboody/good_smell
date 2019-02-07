@@ -10,12 +10,13 @@ pytest-cov = "*"
 autopep8 = "*"
 astpretty = "*"
 pylint = "*"
-black = "*"
+black = "==18.9b0"
 
 [packages]
 fire = "*"
 astor = "*"
 flake8 = "*"
+pyyaml = "==4.2b1"
 
 [requires]
 python_version = "3.7"
