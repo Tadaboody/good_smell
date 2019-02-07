@@ -23,9 +23,7 @@ class YieldFromTransformer(LoggingTransformer):
     with yield from"""
 
     def visit_For(self, node: ast.For):
-        yield_from = ast.Expr(
-            value=ast.YieldFrom(node.iter)
-        )
+        yield_from = ast.Expr(value=ast.YieldFrom(node.iter))
         return ast.fix_missing_locations(yield_from)
 
     @staticmethod

@@ -34,7 +34,7 @@ class AstSmell(LintSmell):
                 row=node.lineno,
                 col=node.col_offset,
                 path=self.path,
-                symbol=self.symbol
+                symbol=self.symbol,
             )
             for node in transformer.transformed_nodes
         ]
