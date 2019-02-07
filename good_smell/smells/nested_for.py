@@ -40,18 +40,20 @@ class NestedForTransformer(LoggingTransformer):
 
     def visit_For(self, node: ast.For) -> ast.For:
         inner_for: ast.For = node.body[0]
-        import_itertools = ast_node("import itertools")
-        itertools_product = ast_node("itertools.product").value
+        new_target = ast.Tuple(elts=[node.target, inner_for.target])
+
+        def create_comprehension(for_node: ast.For) -> ast.comprehension:
+            return ast.comprehension(target=for_node.target, iter=for_node.iter, ifs=[])
+
+        gen_exp = ast.GeneratorExp(
+            elt=new_target,
+            generators=[create_comprehension(node), create_comprehension(inner_for)],
+        )
         new_for = ast.For(
-            target=ast.Tuple(elts=[node.target, inner_for.target]),
-            iter=ast.Call(
-                func=itertools_product, args=[node.iter, inner_for.iter], keywords=[]
-            ),
-            body=inner_for.body,
-            orelse=node.orelse,
+            target=new_target, iter=gen_exp, body=inner_for.body, orelse=node.orelse
         )
         new_for = ast.fix_missing_locations(new_for)
-        return [ast.copy_location(import_itertools, node), new_for]
+        return new_for
 
     @staticmethod
     def is_smelly(node: ast.AST):

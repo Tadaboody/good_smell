@@ -1,4 +1,4 @@
-#: Use itertools instead of nsted fors
+#: Flatten for-loops using nested comprehensions
 # nested-for
 seq_a = [0]
 seq_b = range(10)
@@ -6,10 +6,9 @@ for i in seq_a:
     for j in seq_b:
         print(i, j)
 # ==>
-import itertools
 seq_a = [0]
 seq_b = range(10)
-for i, j in itertools.product(seq_a, seq_b):
+for i, j in ((i,j) for i in seq_a for j in seq_b):
     print(i, j)
 
 # END
