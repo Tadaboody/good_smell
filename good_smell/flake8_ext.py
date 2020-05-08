@@ -16,7 +16,9 @@ class GoodSmellFlake8:
 
     def run(self) -> Generator[Tuple[int, int, str, str], None, None]:
         for num, smell in enumerate(implemented_smells):
-            warnings = smell(tree=self.tree, path=self.filename).check_for_smell()
+            warnings = smell(
+                transform=False, tree=self.tree, path=self.filename
+            ).check_for_smell()
             warning: SmellWarning
             yield from (
                 (
