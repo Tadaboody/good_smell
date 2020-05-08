@@ -1,10 +1,11 @@
 import ast
-from good_smell import implemented_smells, SmellWarning
-from typing import Tuple, Generator
+from typing import Generator, Tuple
+
+from good_smell import SmellWarning, implemented_smells
 
 
-class GoodSmellFlake8:
-    """Entry point good smell to be used as a flake8 plugin"""
+class LintingFlake8:
+    """Entry point good smell to be used as a flake8 linting plugin"""
 
     name = "good-smell"
     version = "0.1"

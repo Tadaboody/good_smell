@@ -22,10 +22,10 @@ class LintSmell(abc.ABC):
     def from_source(
         cls,
         source_code: str,
+        transform: bool = True,
         start_line: Optional[int] = 0,
         end_line: Optional[int] = None,
         path: Optional[str] = None,
-        transform: bool = True,
     ) -> "LintSmell":
         start_line = start_line
         end_line = end_line or len(source_code.splitlines())

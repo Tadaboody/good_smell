@@ -43,7 +43,7 @@ def fix_smell(
 
 
 def main():
-    Fire({"fix": print_fixed_smell, "warn": print_smell_warnings})
+    Fire({"fix": print_fixed_smell})
 
 
 if __name__ == "__main__":
