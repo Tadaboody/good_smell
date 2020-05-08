@@ -28,19 +28,14 @@ For a full list - check the list of [implemented smells](docs/smell_list.md)
 pip install good_smell 
 ```
 ## Usage (Is likely to change when version 1.0 is released):
-``
-good_smell warn - Print warnings about smells in the code
-``
-```sh
-good_smell warn PATH
-good_smell warn --path PATH
-```
-Alternativly you can run it through [flake8](http://flake8.pycqa.org/en/latest/). Smells will be with the code SMLxxx  
 
-``good_smell fix - Print a fixed version of the code``
+To issue warnings, good_smell installs itself as a [flake8](http://flake8.pycqa.org/en/latest/) plugin with error codes starting with SML.
+
+To automatically fix the code use ``good_smell fix``:
+
 ```sh
-good_smell fix PATH [STARTING_LINE] [END_LINE]
-good_smell fix --path PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
+good_smell fix PATH >PATH
+good_smell fix PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
 ```
 
 ## Developing
