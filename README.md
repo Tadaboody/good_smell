@@ -1,10 +1,9 @@
 # Good Smell - it makes your code smell good! 
 A linting/refactoring library for python best practices and lesser-known tricks  
 ---
-[![Build Status](https://travis-ci.com/Tadaboody/good_smell.svg?branch=master)](https://travis-ci.com/Tadaboody/good_smell) 
+![Build](https://github.com/tadaboody/good_smell/workflows/Python%20package/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![PyPi version](https://pypip.in/v/good_smell/badge.png)](https://pypi.org/project/good-smell/)
-[![codecov](https://codecov.io/gh/Tadaboody/good_smell/branch/master/graph/badge.svg)](https://codecov.io/gh/Tadaboody/good_smell)
 
 ---
 
