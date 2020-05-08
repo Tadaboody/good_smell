@@ -8,7 +8,7 @@ If there isn't one, [create one](https://github.com/Tadaboody/good_smell/issues/
 If you want to contribute code you will need to:
 
 ## Create an enviroment
-This project uses [Pipenv]() for package managment
+This project uses [Pipenv](https://github.com/pypa/pipenv) for package managment
 
 Clone the repository and run inside it:
 ```sh
