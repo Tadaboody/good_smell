@@ -5,7 +5,7 @@ import ast
 class NameInNode(LoggingTransformer):
     def __init__(self, name: ast.Name):
         self.name = name
-        super().__init__()
+        super().__init__(transform=False)
 
     def is_smelly(self, node: ast.AST) -> bool:
         return isinstance(node, ast.Name) and node.id == self.name.id
