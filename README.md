@@ -16,10 +16,10 @@ for i in seq_a:
     for j in seq_b:
         print(i, j)
 ```
-will be flattened using [itertools.product](https://docs.python.org/3/library/itertools.html#itertools.product)
+will be flattened to a nested comprehension
 ```py
 import itertools
-for i, j in itertools.product(seq_a, seq_b):
+for i, j in ((i,j) for i in seq_a for j in seq_b):
     print(i, j)
 ```
 For a full list - check the list of [implemented smells](docs/smell_list.md)
