@@ -18,7 +18,6 @@ for i in seq_a:
 ```
 will be flattened to a nested comprehension
 ```py
-import itertools
 for i, j in ((i,j) for i in seq_a for j in seq_b):
     print(i, j)
 ```
