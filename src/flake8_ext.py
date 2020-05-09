@@ -1,5 +1,4 @@
 import ast
-import math
 from good_smell import implemented_smells, SmellWarning
 from typing import Tuple, Generator
 

@@ -1,3 +1,4 @@
+# flake8:noqa
 from .smell_warning import SmellWarning
 from .lint_smell import LintSmell
 from .ast_smell import AstSmell, LoggingTransformer

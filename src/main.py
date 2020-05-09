@@ -16,7 +16,7 @@ def print_smell_warnings(path: str):
     )
 
 
-def smell_warnings(source: str, path: str='') -> Iterable[SmellWarning]:
+def smell_warnings(source: str, path: str = "") -> Iterable[SmellWarning]:
     for smell in implemented_smells:
         yield from smell.from_source(
             source_code=source, path=str(path)
