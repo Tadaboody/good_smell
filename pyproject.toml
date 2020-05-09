@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "good_smell"
-version = "0.15"
+version = "0.16"
 description = "A linter/refactoring tool to make your code smell better!"
 authors = ["Tomer Keren <tomer.keren.dev@gmail.com>"]
 license = "BSD-3-Clause"
