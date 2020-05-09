@@ -16,7 +16,7 @@ class NameReplacer(ast.NodeTransformer):
         return node
 
 
-T = TypeVar('T', bound=ast.AST)
+T = TypeVar("T", bound=ast.AST)
 
 
 def replace_name_with_node(node: T, old_val: ast.Name, new_val: ast.AST) -> T:
@@ -32,21 +32,24 @@ class FilterTransformer(LoggingTransformer):
         filter_condition: ast.Expr = if_node.test
         if not isinstance(node.iter, ast.GeneratorExp):
             # Create a generator expression if it doesn't exist
-            GEN_ELT_NAME = 'x'
+            GEN_ELT_NAME = "x"
             gen_exp: ast.GeneratorExp = cast(
-                ast.GeneratorExp, ast_node(f"({GEN_ELT_NAME} for {GEN_ELT_NAME} in seq)").value
+                ast.GeneratorExp,
+                ast_node(f"({GEN_ELT_NAME} for {GEN_ELT_NAME} in seq)").value,
             )
             gen_target = ast_node(GEN_ELT_NAME).value
             iter_comprehension = gen_exp.generators[0]
             iter_comprehension.iter = replace_name_with_node(
-                node.iter, node.target, gen_target)
+                node.iter, node.target, gen_target
+            )
         else:
             gen_exp = node.iter
             iter_comprehension = gen_exp.generators[0]
             gen_target = gen_exp.elt
 
-        iter_comprehension.ifs.append(replace_name_with_node(
-            filter_condition, node.target, gen_target))
+        iter_comprehension.ifs.append(
+            replace_name_with_node(filter_condition, node.target, gen_target)
+        )
         node.iter = gen_exp
         node.body = if_node.body
         return node

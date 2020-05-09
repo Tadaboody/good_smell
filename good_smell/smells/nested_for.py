@@ -27,7 +27,7 @@ class NestedFor(AstSmell):
 
     @property
     def warning_message(self):
-        return "Consider using itertools.product instead of a nested for"
+        return "Consider using a nested comprehension instead of a nested for"
 
     @property
     def symbol(self):
