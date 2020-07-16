@@ -1,14 +1,14 @@
 import ast
 from typing import Generator, Tuple
 
-from good_smell import SmellWarning, implemented_smells
+from good_smell import SmellWarning, implemented_smells, __version__
 
 
 class LintingFlake8:
     """Entry point good smell to be used as a flake8 linting plugin"""
 
     name = "good-smell"
-    version = "0.1"
+    version = __version__
 
     def __init__(self, tree: ast.AST, filename: str):
         """"http://flake8.pycqa.org/en/latest/plugin-development/plugin-parameters.html"""
