@@ -46,6 +46,7 @@ for num in range(1, 5):
     for digits in range(1, 10 ** num):
         pass
 #: Check no errors with unpacking (#61)
+# END
 # None
 for i, num in enumerate(range(1, 5)):
     for digits in range(1, 10 ** num):
