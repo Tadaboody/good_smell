@@ -38,4 +38,4 @@ good_smell fix PATH [--starting-line STARTING_LINE] [--end-line END_LINE]
 ```
 
 ## Developing
-See [contributing guide](CONTRIBUTING)
+See [contributing guide](CONTRIBUTING.md)
