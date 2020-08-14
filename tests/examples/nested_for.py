@@ -1,14 +1,10 @@
 #: Flatten for-loops using nested comprehensions
 # nested-for
-seq_a = [0]
-seq_b = range(10)
 for i in seq_a:
     for j in seq_b:
         print(i, j)
 # ==>
-seq_a = [0]
-seq_b = range(10)
-for i, j in ((i,j) for i in seq_a for j in seq_b):
+for i, j in ((i, j) for i in seq_a for j in seq_b):
     print(i, j)
 
 # END
@@ -55,3 +51,16 @@ for i, num in enumerate(range(1, 5)):
 for i, num in enumerate(range(1, 5)):
     for digits in range(1, 10 ** num):
         pass
+# END
+#: Check no errors with unpacking (#61), but also flatten
+# nested-for
+for i, j in enumerate(range(1, 5)):
+    for digits in range(1, 10 ** num):
+        pass
+# ==>
+for (i, j), digits in (
+    ((i, j), digits)
+    for i, j in enumerate(range(1, 5))
+    for digits in range(1, 10 ** num)
+):
+    pass
