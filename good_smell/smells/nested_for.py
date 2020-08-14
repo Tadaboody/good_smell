@@ -1,5 +1,7 @@
-from good_smell import AstSmell, LoggingTransformer
 import ast
+import typing
+
+from good_smell import AstSmell, LoggingTransformer
 
 
 class NameInNode(LoggingTransformer):
@@ -63,7 +65,10 @@ class NestedForTransformer(LoggingTransformer):
             and isinstance(node.body[0], ast.For)
             and len(node.body) == 1
             # Check there's no dependancy between nodes
-            and not name_in_node(node.body[0].iter, node.target)
+            and not any(
+                name_in_node(node.body[0].iter, target)
+                for target in for_target_names(node)
+            )
         )
 
 
@@ -71,3 +76,9 @@ def ast_node(expr: str) -> ast.AST:
     """Helper function to parse a string denoting an expression into an AST node"""
     # ast.parse returns "Module(body=[Node])"
     return ast.parse(expr).body[0]
+
+
+def for_target_names(node: ast.For) -> typing.List[ast.Name]:
+    """Returns the names that are the targets of the for loop."""
+    target = typing.cast(typing.Union[ast.Tuple, ast.Name], node.target)
+    return target.elts if isinstance(target, ast.Tuple) else [target]
