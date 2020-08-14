@@ -8,13 +8,13 @@ If there isn't one, [create one](https://github.com/Tadaboody/good_smell/issues/
 If you want to contribute code you will need to:
 
 ## Create an enviroment
-This project uses [Pipenv](https://github.com/pypa/pipenv) for package managment
+This project uses [Poetry](https://python-poetry.org/) for package managment
 
 Clone the repository and run inside it:
 ```sh
-pip install pipenv # Install pipenv
-pipenv install --dev # Create a new enviroment and install the development requirements
-pre-commit install # Install pre-commit hooks
+poetry install # Create a new enviroment and install the development requirements
+poetry shell # Activate 
+run pre-commit install # Install pre-commit hooks
 ```
 ## Write the solution
 New smells are implented in a new file in `good_smell/smells`, by creating a class that inherits `good_smell/lint_smell.py`.
