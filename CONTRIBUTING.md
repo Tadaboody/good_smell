@@ -8,10 +8,11 @@ If there isn't one, [create one](https://github.com/Tadaboody/good_smell/issues/
 If you want to contribute code you will need to:
 
 ## Create an enviroment
-This project uses [Poetry](https://python-poetry.org/) for package managment
+This project uses [Poetry](https://python-poetry.org/docs) for package managment
 
 Clone the repository and run inside it:
 ```sh
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python # Install poetry on your machine
 poetry install # Create a new enviroment and install the development requirements
 poetry shell # Activate 
 run pre-commit install # Install pre-commit hooks
