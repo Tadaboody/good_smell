@@ -86,7 +86,7 @@ def params_from_file():
                 case.before,
                 case.after,
                 case.error_symbols,
-                id=file.name + ":" + case.desc,
+                id=f"{file.with_suffix('').name}:{case.desc}",
             )
             for case in collect_tests(file)
         )
