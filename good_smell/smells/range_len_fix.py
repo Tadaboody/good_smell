@@ -36,7 +36,7 @@ class AssignDeleter(ast.NodeTransformer):
         """Checks if the node acceses the sequence[target]"""
         if (
             isinstance(node, ast.Subscript)
-            and node.slice.value.id == self.id.id
+            and node.slice.id == self.id.id
             and node.value.id == self.seq.id
         ):
             self.uses_seq = True
