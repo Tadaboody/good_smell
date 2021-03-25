@@ -65,3 +65,28 @@ for i in range(len(sequence)):
 for i, _ in enumerate(sequence):
     a = 0
     print(sequence[j])
+# END
+#: Behave correctly when used in the upper part of a slice
+# range-len
+for i in range(len(sequence)):
+    print(sequence[1:i])
+# ==>
+for i, _ in enumerate(sequence):
+    print(sequence[1:i])
+# END
+#: Don't replace access when used in the upper part of a slice
+# range-len
+for i in range(len(sequence)):
+    print(sequence[i:1])
+# ==>
+for i, _ in enumerate(sequence):
+    print(sequence[i:1])
+# END
+#: Don't replace access used in the upper part of a slice
+# range-len
+for i in range(len(sequence)):
+    print(sequence[2:1])
+# ==>
+for i, _ in enumerate(sequence):
+    print(sequence[2:1])
+# END

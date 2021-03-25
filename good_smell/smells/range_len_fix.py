@@ -37,16 +37,19 @@ class AssignDeleter(ast.NodeTransformer):
         """Get slice identifier.
 
         Needed because in python3.9 ast.Subscript.slice became a ast.Name, instead of a ast.Index."""
-        try:
-            return node.slice.id
-        except AttributeError:
-            return node.slice.value.id
+        slice = node.slice
+        if isinstance(slice, ast.Name):
+            return [slice.id]
+        if isinstance(slice, ast.Index):
+            return [slice.value.id]
+        if isinstance(slice, ast.Slice):
+            return [slice.upper, slice.lower]
 
     def accesses_seq(self, node) -> bool:
         """Checks if the node acceses the sequence[target]"""
         if (
             isinstance(node, ast.Subscript)
-            and self.__get_slice_id(node) == self.id.id
+            and self.id.id in self.__get_slice_id(node)
             and node.value.id == self.seq.id
         ):
             self.uses_seq = True
