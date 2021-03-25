@@ -7,7 +7,7 @@ after = 0
 after = 1
 # END
 #: example
-# example-symbol,another-one
+# None
 before = 0
 before = 1
 # ==>
