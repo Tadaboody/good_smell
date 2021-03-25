@@ -1,7 +1,7 @@
 import ast
 
 from good_smell import AstSmell, LoggingTransformer
-from typing import Union
+from typing import Union, Container
 
 
 class RangeLenSmell(AstSmell):
@@ -33,7 +33,7 @@ class AssignDeleter(ast.NodeTransformer):
         return self.generic_visit(node)
 
     @staticmethod
-    def __get_slice_id(node: ast.Subscript) -> str:
+    def __get_slice_id(node: ast.Subscript) -> Container[str]:
         """Get slice identifier.
 
         Needed because in python3.9 ast.Subscript.slice became a ast.Name, instead of a ast.Index."""
