@@ -1,7 +1,9 @@
+import ast
 import itertools
 from os import PathLike
 from pathlib import Path
 from typing import Iterator, Set, NamedTuple
+import astor
 
 import black
 import pytest
@@ -14,6 +16,7 @@ EXAMPLES_DIR = FILE_DIR / "examples"
 
 def normalize_formatting(code: str) -> str:
     """Returns a string of the code with normalized formatting for easier compares"""
+    code = astor.to_source(ast.parse(code))
     try:
         return black.format_file_contents(code, line_length=88, fast=True)
     except black.NothingChanged:
