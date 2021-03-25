@@ -32,11 +32,21 @@ class AssignDeleter(ast.NodeTransformer):
             return None
         return self.generic_visit(node)
 
+    @staticmethod
+    def __get_slice_id(node: ast.Subscript) -> str:
+        """Get slice identifier.
+
+        Needed because in python3.9 ast.Subscript.slice became a ast.Name, instead of a ast.Index."""
+        try:
+            return node.slice.id
+        except AttributeError:
+            return node.slice.value.id
+
     def accesses_seq(self, node) -> bool:
         """Checks if the node acceses the sequence[target]"""
         if (
             isinstance(node, ast.Subscript)
-            and node.slice.id == self.id.id
+            and self.__get_slice_id(node) == self.id.id
             and node.value.id == self.seq.id
         ):
             self.uses_seq = True
