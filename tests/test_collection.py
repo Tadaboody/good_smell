@@ -2,12 +2,11 @@ import ast
 import itertools
 from os import PathLike
 from pathlib import Path
-from typing import Iterator, Set, NamedTuple
-import astor
+from typing import Iterator, NamedTuple, Set
 
+import astor
 import black
 import pytest
-
 from good_smell import fix_smell, smell_warnings
 
 FILE_DIR = Path(__file__).parent
@@ -72,11 +71,13 @@ def test_collect_tests():
     example_path = EXAMPLES_DIR / "example.py"
     collected_tests = list(collect_tests(example_path))
     assert len(collected_tests) == 2
-    for case in collected_tests:
-        assert case.desc == "example"
-        assert case.error_symbols == {"example-symbol", "another-one"}
-        assert case.before == """before = 0\nbefore = 1\n"""
-        assert case.after == """after = 0\nafter = 1\n"""
+    case_with_symbol, case_with_no_symbol = collected_tests
+    assert case_with_symbol.desc == "example"
+    assert case_with_symbol.error_symbols == {"example-symbol", "another-one"}
+    assert case_with_symbol.before == """before = 0\nbefore = 1\n"""
+    assert case_with_symbol.after == """after = 0\nafter = 1\n"""
+
+    assert case_with_no_symbol.error_symbols == set()
 
 
 test_case_files = [f for f in EXAMPLES_DIR.iterdir() if "example" not in f.name]
@@ -95,11 +96,11 @@ def params_from_file():
         )
 
 
-@pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
-def test_smell_warning(before, after, symbols):  # pylint: disable=unused-argument
+@pytest.mark.parametrize(["before", "_", "symbols"], params_from_file())
+def test_smell_warning(before, _, symbols):
     assert set(symbols) == {smell.symbol for smell in smell_warnings(before)}
 
 
-@pytest.mark.parametrize(["before", "after", "symbols"], list(params_from_file()))
-def test_smell_fixing(before, after, symbols):  # pylint: disable=unused-argument
+@pytest.mark.parametrize(["before", "after", "_"], list(params_from_file()))
+def test_smell_fixing(before, after, _):
     assert normalize_formatting(fix_smell(before)) == normalize_formatting(after)
