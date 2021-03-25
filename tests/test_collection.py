@@ -7,6 +7,7 @@ from typing import Iterator, NamedTuple, Set
 import astor
 import black
 import pytest
+
 from good_smell import fix_smell, smell_warnings
 
 FILE_DIR = Path(__file__).parent
