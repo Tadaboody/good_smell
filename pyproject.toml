@@ -24,7 +24,7 @@ pre-commit = "*"
 pytest = "*"
 autopep8 = "*"
 pylint = "*"
-black = "==18.9b0"
+black = "==20.8b1"
 
 [tool.poetry.scripts]
 good_smell = "good_smell:main"
