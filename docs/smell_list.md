@@ -1,3 +1,16 @@
+### Warn when using join on a (short) list of known literals. (join-literal)
+```py
+a = "foo"
+b = "bar"
+",".join([a, b])
+
+```
+Will be fixed to
+```py
+a = "foo"
+b = "bar"
+"{},{}".format(a, b)
+```
 ### Use "yield from" instead of yield inside of a for loop (yield-from)
 ```py
 seq = range(10)
