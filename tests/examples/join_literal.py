@@ -1,5 +1,5 @@
 #: Warn when using join on a (short) list of known literals.
-# join_literal
+# join-literal
 a = "foo"
 b = "bar"
 ",".join([a, b])
