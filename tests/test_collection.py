@@ -18,7 +18,7 @@ def normalize_formatting(code: str) -> str:
     """Returns a string of the code with normalized formatting for easier compares"""
     code = astor.to_source(ast.parse(code))
     try:
-        return black.format_file_contents(code, line_length=88, fast=True)
+        return black.format_file_contents(code, fast=True, mode=black.Mode())
     except black.NothingChanged:
         return code
 

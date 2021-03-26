@@ -1,11 +1,11 @@
 exclude: 'examples/.*\.py'
 repos:
 - repo: https://github.com/ambv/black
-  rev: stable
+  rev: 20.8b1
   hooks:
   - id: black
 - repo: https://github.com/pycqa/isort
-  rev: 5.6.3
+  rev: 5.8.0
   hooks:
     - id: isort
       name: isort (python)
