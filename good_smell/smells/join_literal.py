@@ -66,4 +66,5 @@ class Transformer(LoggingTransformer):
             and node.func.attr == "join"
             and len(node.args) == 1
             and isinstance(node.args[0], ast.List)
+            and not any(isinstance(el, ast.Starred) for el in node.args[0].elts)
         )
