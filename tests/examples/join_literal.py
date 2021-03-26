@@ -1,4 +1,4 @@
-#: Warn when using join on a (short) list of known literals.
+#: Warn when using join on a list of known literals.
 # join-literal
 a = "foo"
 b = "bar"
