@@ -1,9 +1,9 @@
 from pathlib import Path
+from typing import Iterable, Type
 
 from fire import Fire
-from typing import Type, Iterable
 
-from good_smell import LintSmell, implemented_smells, SmellWarning
+from good_smell import LintSmell, SmellWarning, implemented_smells
 
 
 def print_smell_warnings(path: str):
@@ -19,7 +19,7 @@ def print_smell_warnings(path: str):
 def smell_warnings(source: str, path: str = "") -> Iterable[SmellWarning]:
     for smell in implemented_smells:
         yield from smell.from_source(
-            source_code=source, path=str(path)
+            source_code=source, path=str(path), transform=False
         ).check_for_smell()
 
 
@@ -37,7 +37,11 @@ def fix_smell(
     smell: Type[LintSmell]
     for smell in implemented_smells:
         source = smell.from_source(
-            source, starting_line, end_line, path=path
+            source_code=source,
+            start_line=starting_line,
+            end_line=end_line,
+            path=path,
+            transform=True,
         ).fix_smell()
     return source
 
