@@ -3,7 +3,6 @@
 a = "foo"
 b = "bar"
 ",".join([a, b])
-
 ```
 Will be fixed to
 ```py
@@ -16,7 +15,6 @@ b = "bar"
 seq = range(10)
 for x in seq:
     yield x
-
 ```
 Will be fixed to
 ```py
@@ -28,7 +26,6 @@ yield from seq
 for i in range(len(sequence)):
     a = sequence[i]
     print(a)
-
 ```
 Will be fixed to
 ```py
@@ -41,7 +38,6 @@ for i in range(10):
     if i == 2:
         print(1)
         print(2)
-
 ```
 Will be fixed to
 ```py
@@ -56,7 +52,6 @@ seq_b = range(10)
 for i in seq_a:
     for j in seq_b:
         print(i, j)
-
 ```
 Will be fixed to
 ```py

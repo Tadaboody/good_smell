@@ -8,8 +8,7 @@ def generate_smell_docs():
         print(
             f"""### {desc} ({symbol})
 ```py
-{before}
-```
+{before}```
 Will be fixed to
 ```py
 {after}```"""
