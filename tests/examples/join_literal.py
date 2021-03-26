@@ -28,3 +28,9 @@ iterable = ["a","b"]
 # ==>
 ",".join([str(i) for i in range(100)])
 # END
+#: Don't warn when the list literal includes an unpacking
+# None
+",".join([1,2,3,*a])
+# ==>
+",".join([1,2,3,*a])
+# END
