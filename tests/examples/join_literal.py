@@ -4,6 +4,8 @@ a = "foo"
 b = "bar"
 ",".join([a, b])
 # ==>
+a = "foo"
+b = "bar"
 "{},{}".format(a, b)
 # END
 #: Don't warn when joining an iterable

@@ -8,7 +8,7 @@ class JoinLiteral(AstSmell):
 
     @property
     def transformer_class(self):
-        return NestedForTransformer
+        return Transformer
 
     @property
     def warning_message(self):
@@ -21,9 +21,21 @@ class JoinLiteral(AstSmell):
         return "join-literal"
 
 
-class NestedForTransformer(LoggingTransformer):
-    """NodeTransformer that goes visits all the nested `for`s and replaces them
-    with itertools.product"""
+class Transformer(LoggingTransformer):
+    """Checks for usages of str.join with a constant amount of arguments."""
+
+    def visit_Call(self, node: ast.Call) -> ast.Call:
+        format_arguments = node.args[0].elts
+        format_delimiter = node.func.value.value
+        format_string = format_delimiter.join(["{}"] * len(format_arguments))
+        new_call = ast.Call(
+            func=ast.Attribute(
+                value=ast.Constant(value=format_string), attr="format", ctx=ast.Load()
+            ),
+            args=format_arguments,
+            keywords=[],
+        )
+        return ast.fix_missing_locations(new_call)
 
     @staticmethod
     def is_smelly(node: ast.AST):
