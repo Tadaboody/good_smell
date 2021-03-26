@@ -2,6 +2,12 @@ import ast
 
 from good_smell import AstSmell, LoggingTransformer
 
+try:
+    # ast.Str is deprecated in py3.8 and will be removed
+    StrConst = (ast.Constant, ast.Str)
+except AttributeError:
+    StrConst = (ast.Constant,)
+
 
 class JoinLiteral(AstSmell):
     """Checks if joining a literal of a sequence."""
@@ -24,9 +30,22 @@ class JoinLiteral(AstSmell):
 class Transformer(LoggingTransformer):
     """Checks for usages of str.join with a constant amount of arguments."""
 
+    @staticmethod
+    def normalize_constant(node) -> ast.Constant:
+        """Compatibility wrapper for py3.8+, ast, ast.Str and ast.Num are replaced by ast.Constant.
+
+        We don't type annotate `node` so it doesn't break on py3.10+ when these classes will be removed.
+        """
+        for attr in ["value", "s", "n"]:
+            try:
+                return ast.Constant(value=getattr(node, attr))
+            except AttributeError:
+                pass
+        raise ValueError("Not a constat.")
+
     def visit_Call(self, node: ast.Call) -> ast.Call:
         format_arguments = node.args[0].elts
-        format_delimiter = node.func.value.value
+        format_delimiter = self.normalize_constant(node.func.value).value
         format_string = format_delimiter.join(["{}"] * len(format_arguments))
         new_call = ast.Call(
             func=ast.Attribute(
@@ -43,7 +62,7 @@ class Transformer(LoggingTransformer):
         return (
             isinstance(node, ast.Call)
             and isinstance(node.func, ast.Attribute)
-            and isinstance(node.func.value, ast.Constant)
+            and isinstance(node.func.value, StrConst)
             and node.func.attr == "join"
             and len(node.args) == 1
             and isinstance(node.args[0], ast.List)
