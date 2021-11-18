@@ -26,7 +26,7 @@ For a full list - check the list of [implemented smells](docs/smell_list.md)
 ```sh
 pip install good_smell 
 ```
-## Usage (Is likely to change when version 1.0 is released):
+## Usage
 
 To issue warnings, good_smell installs itself as a [flake8](http://flake8.pycqa.org/en/latest/) plugin with error codes starting with SML.
 
